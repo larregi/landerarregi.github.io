@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lander Arregi — Product Designer</title>
+  <meta name="description" content="Senior product designer crafting clarity for fintech, transit and SaaS teams.">
+
+  <!-- Theme bootstrap (runs before paint to avoid flash) -->
+  <script>
+    (function () {
+      var STORAGE_KEY = 'lp-theme';
+      var pref = localStorage.getItem(STORAGE_KEY) || 'light';
+      if (pref !== 'dark' && pref !== 'light') pref = 'light';
+      function apply(p) {
+        document.documentElement.setAttribute('data-theme', p === 'dark' ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme-pref', p);
+      }
+      apply(pref);
+      window.__applyTheme = apply;
+    })();
+  </script>
+
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="styles.css">
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" src="Chrome.jsx"></script>
+  <script type="text/babel" src="Hero.jsx"></script>
+  <script type="text/babel" src="Works.jsx"></script>
+  <script type="text/babel" src="Sections.jsx"></script>
+
+  <script type="text/babel" data-presets="react">
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "theme": "dark",
+      "direction": "editorial",
+      "navStyle": "pill",
+      "projectLayout": "alternating"
+    }/*EDITMODE-END*/;
+
+    function useReveal() {
+      React.useEffect(() => {
+        const els = document.querySelectorAll('.lp-reveal');
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add('is-in');
+              io.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+        els.forEach((el) => io.observe(el));
+        return () => io.disconnect();
+      });
+    }
+
+    function setTheme(pref) {
+      localStorage.setItem('lp-theme', pref);
+      window.__applyTheme(pref);
+    }
+
+    function App() {
+      const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+      const [themePref, setThemePref] = React.useState(() => {
+        const v = localStorage.getItem('lp-theme');
+        return v === 'dark' ? 'dark' : 'light';
+      });
+
+      React.useEffect(() => {
+        document.documentElement.setAttribute('data-direction', t.direction);
+      }, [t.direction]);
+
+      const onThemeChange = (pref) => {
+        setThemePref(pref);
+        setTheme(pref);
+        setTweak('theme', pref);
+      };
+
+      // Keep tweak panel theme in sync with stored pref on mount
+      React.useEffect(() => {
+        if (t.theme && t.theme !== themePref) {
+          setThemePref(t.theme); setTheme(t.theme);
+        }
+      }, []); // eslint-disable-line
+
+      useReveal();
+
+      return (
+        <>
+          <Grain />
+          <ScrollProgress />
+          <Nav navStyle={t.navStyle} theme={themePref} setTheme={onThemeChange} />
+
+          <main>
+            <Hero direction={t.direction} />
+            {t.direction === 'bold' && <Marquee />}
+            <Works layout={t.projectLayout} />
+            <Experience />
+            <Skills />
+            <About />
+            <Contact />
+            <Footer />
+          </main>
+
+          <TweaksPanel title="Tweaks">
+            <TweakSection label="Theme">
+              <TweakRadio
+                label="Mode"
+                value={themePref}
+                onChange={(v) => onThemeChange(v)}
+                options={[
+                  { label: 'Light', value: 'light' },
+                  { label: 'Dark',  value: 'dark' },
+                ]}
+              />
+            </TweakSection>
+
+            <TweakSection label="Direction">
+              <TweakRadio
+                label="Visual style"
+                value={t.direction}
+                onChange={(v) => setTweak('direction', v)}
+                options={[
+                  { label: 'Editorial', value: 'editorial' },
+                  { label: 'Bold',      value: 'bold' },
+                ]}
+              />
+            </TweakSection>
+
+            <TweakSection label="Navbar">
+              <TweakRadio
+                label="Style"
+                value={t.navStyle}
+                onChange={(v) => setTweak('navStyle', v)}
+                options={[
+                  { label: 'Floating pill', value: 'pill' },
+                  { label: 'Flat bar',      value: 'flat' },
+                ]}
+              />
+            </TweakSection>
+
+            <TweakSection label="Project layout">
+              <TweakSelect
+                label="Showcase"
+                value={t.projectLayout}
+                onChange={(v) => setTweak('projectLayout', v)}
+                options={[
+                  { label: 'Sticky scroll',   value: 'sticky' },
+                  { label: 'Alternating rows', value: 'alternating' },
+                  { label: 'Grid (2-col)',    value: 'grid' },
+                ]}
+              />
+            </TweakSection>
+          </TweaksPanel>
+        </>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
