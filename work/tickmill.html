@@ -1,0 +1,2195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tickmill — Case Study · Lander Arregi</title>
+  <meta name="description" content="Redesigning a premium trading platform around transparency — a calm, clarity-first dashboard for retail traders.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    (function () {
+      var STORAGE_KEY = 'la-theme';
+      var pref = localStorage.getItem(STORAGE_KEY) || 'light';
+      if (pref !== 'dark' && pref !== 'light') pref = 'light';
+      document.documentElement.setAttribute('data-theme', pref);
+      document.documentElement.setAttribute('data-theme-pref', pref);
+    })();
+  </script>
+
+  <style>
+/* ===== tokens.css ===== */
+/* ============================================================
+   Lander Arregi — Design Tokens
+   colors_and_type.css
+   Source: reverse-engineered from larregi.framer.website
+   ============================================================ */
+
+/* Typography — Inter as Google Fonts substitute (see README §Type) */
+:root {
+  /* -------- Color: base palette ---------------------------- */
+  --bg:            #FBFBFA;
+  --surface:       #FFFFFF;
+  --surface-alt:   #F4F5F2;
+
+  --mint:          #1FBF6C;   /* accent — vibrant emerald */
+  --mint-soft:     #DFF6E8;
+  --mint-ink:      #0E7A45;
+
+  /* Icon-specific pairing — calmer sage badge + deeper green glyph */
+  --icon-badge-bg:  #C2DDD0;
+  --icon-badge-fg:  #406754;
+
+  --fg:            #403D3D;   /* primary text */
+  --fg-1:          #5A5757;
+  --fg-2:          #7B7A7A;
+  --fg-3:          #A3A3A3;
+
+  --border:        #CACACA;
+  --border-strong: #B3B3B3;
+
+  /* -------- Color: semantic ------------------------------- */
+  --color-bg:        var(--bg);
+  --color-surface:   var(--surface);
+  --color-text:      var(--fg);
+  --color-text-muted:var(--fg-2);
+  --color-text-soft: var(--fg-3);
+  --color-accent:    var(--mint);
+  --color-accent-ink:var(--mint-ink);
+  --color-divider:   var(--border);
+
+  /* -------- Type: family ---------------------------------- */
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* -------- Type: scale (px) ------------------------------ */
+  --fs-display: 80px;
+  --fs-h1:      52px;
+  --fs-h2:      36px;
+  --fs-h3:      22px;
+  --fs-lead:    20px;
+  --fs-body:    17px;
+  --fs-meta:    14px;
+  --fs-kicker:  12px;
+
+  /* -------- Type: line-height + tracking ------------------ */
+  --lh-display: 1.05;
+  --lh-tight:   1.1;
+  --lh-snug:    1.25;
+  --lh-body:    1.55;
+  --tr-display: -0.022em;
+  --tr-h:       -0.015em;
+  --tr-kicker:  0.12em;
+
+  /* -------- Type: weight ---------------------------------- */
+  --fw-regular: 400;
+  --fw-medium:  500;
+  --fw-semi:    600;
+  --fw-bold:    700;
+  --fw-black:   800;
+
+  /* -------- Spacing --------------------------------------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --space-10: 128px;
+  --space-11: 160px;
+
+  /* -------- Radii ----------------------------------------- */
+  --radius-sm:   6px;
+  --radius-md:   12px;
+  --radius-card: 16px;
+  --radius-lg:   24px;
+  --radius-pill: 9999px;
+
+  /* -------- Shadows --------------------------------------- */
+  --shadow-1:    0 1px 2px rgba(15, 18, 22, 0.04);
+  --shadow-2:    0 8px 24px rgba(15, 18, 22, 0.06);
+  --shadow-card: 0 12px 40px rgba(15, 18, 22, 0.08);
+
+  /* -------- Motion ---------------------------------------- */
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro:   160ms;
+  --dur-base:    320ms;
+  --dur-entry:   600ms;
+
+  /* -------- Layout ---------------------------------------- */
+  --content-max: 1200px;
+  --content-pad: 80px;
+
+  /* -------- Theme transition ------------------------------ */
+  --theme-transition:
+    background-color var(--dur-base) var(--ease-out),
+    color            var(--dur-base) var(--ease-out),
+    border-color     var(--dur-base) var(--ease-out);
+}
+
+/* ============================================================
+   Dark theme — applied via [data-theme="dark"] on <html>
+   Toggle script lives in theme.js (sync, runs before paint).
+   ============================================================ */
+:root[data-theme="dark"] {
+  --bg:            #1A1818;
+  --surface:       #221F1F;
+  --surface-alt:   #2A2727;
+
+  --mint:          #2BD37A;   /* accent — vibrant on dark */
+  --mint-soft:     #14321F;
+  --mint-ink:      #7EE7A8;   /* lighter so it reads on dark */
+
+  /* Icon pairing on dark */
+  --icon-badge-bg:  #2A4234;
+  --icon-badge-fg:  #C2DDD0;
+
+  --fg:            #F2EFEF;
+  --fg-1:          #CECBCB;
+  --fg-2:          #9A9898;
+  --fg-3:          #6F6D6D;
+
+  --border:        #3A3737;
+  --border-strong: #4F4C4C;
+
+  --shadow-1:    0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-2:    0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-card: 0 12px 40px rgba(0, 0, 0, 0.55);
+}
+
+/* Apply transitions to common surfaces so the swap feels alive */
+html, body, .la-nav, .la-chip, .la-project__media,
+.la-resume-row, .la-image-grid__tile, .la-footer,
+.la-ticker, .la-hero__badge {
+  transition: var(--theme-transition);
+}
+
+/* ============================================================
+   Semantic element styles — opt-in via .ds-prose or directly
+   ============================================================ */
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.ds-display {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-display);
+  line-height: var(--lh-display);
+  letter-spacing: var(--tr-display);
+  color: var(--fg);
+}
+.ds-h1 {
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-h1);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tr-h);
+  color: var(--fg);
+}
+.ds-h2 {
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-h2);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tr-h);
+  color: var(--fg);
+}
+.ds-h3 {
+  font-weight: var(--fw-semi);
+  font-size: var(--fs-h3);
+  line-height: var(--lh-snug);
+  color: var(--fg);
+}
+.ds-lead {
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-lead);
+  line-height: 1.4;
+  color: var(--fg-1);
+}
+.ds-body {
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--fg-1);
+}
+.ds-meta {
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-meta);
+  line-height: 1.4;
+  color: var(--fg-2);
+}
+.ds-kicker {
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-kicker);
+  letter-spacing: var(--tr-kicker);
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+
+/* ============================================================
+   Primitive components — pill chip, card frame, divider
+   ============================================================ */
+.ds-chip {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--fg-1);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-medium);
+}
+.ds-chip--solid {
+  background: var(--mint);
+  border-color: transparent;
+  color: var(--fg);
+}
+
+.ds-card {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-1);
+}
+
+.ds-divider {
+  height: 1px;
+  background: var(--border);
+  border: 0;
+}
+
+/* ============================================================
+   Link defaults — underline on hover, color preserved
+   ============================================================ */
+.ds-link {
+  color: var(--fg);
+  text-decoration: none;
+  transition: color var(--dur-micro) var(--ease-out);
+}
+.ds-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+.ds-link:active { color: var(--fg-1); }
+
+
+/* ===== styles.css ===== */
+/* ============================================================
+   Lander Arregi — Portfolio Redesign
+   Layers on top of tokens.css. Two variants: editorial / bold.
+   ============================================================ */
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "ss01", "cv11";
+  overflow-x: hidden;
+}
+
+/* Smooth global theme/variant cross-fade */
+body, .lp-nav, .lp-chip, .lp-project__media,
+.lp-card, .lp-marquee, .lp-hero, .lp-section,
+.lp-footer, .lp-contact, .lp-resume__row, .lp-sticky__panel {
+  transition:
+    background-color var(--dur-base) var(--ease-out),
+    color            var(--dur-base) var(--ease-out),
+    border-color     var(--dur-base) var(--ease-out),
+    box-shadow       var(--dur-base) var(--ease-out);
+}
+
+::selection { background: var(--mint); color: #0b0a0a; }
+
+/* ============================================================
+   Grain overlay — fixed, behind nothing
+   ============================================================ */
+.lp-grain {
+  position: fixed; inset: 0; pointer-events: none; z-index: 100;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  background-image: var(--grain-bg);
+  background-size: 180px 180px;
+}
+:root[data-theme="dark"] .lp-grain { mix-blend-mode: screen; opacity: 0.07; }
+
+/* ============================================================
+   Scroll progress bar (custom)
+   ============================================================ */
+.lp-progress {
+  position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 90;
+  pointer-events: none;
+}
+.lp-progress__bar {
+  height: 100%; width: 0;
+  background: var(--mint);
+  transform-origin: left;
+  transition: width 80ms linear;
+  box-shadow: 0 0 12px color-mix(in srgb, var(--mint) 60%, transparent);
+}
+
+/* ============================================================
+   Wrap / sections
+   ============================================================ */
+.lp-wrap { max-width: 1240px; margin: 0 auto; padding: 0 40px; }
+@media (max-width: 800px) {
+  .lp-wrap { padding: 0 22px; }
+  .lp-nav-wrap { padding: 18px 22px; }
+}
+
+.lp-section {
+  padding: clamp(80px, 12vw, 160px) 0;
+  position: relative;
+}
+.lp-section__head {
+  display: flex; align-items: baseline; gap: 18px;
+  margin-bottom: clamp(36px, 5vw, 64px);
+}
+.lp-section__head .lp-kicker { flex: 0 0 auto; }
+.lp-section__head .lp-kicker-line {
+  flex: 1; height: 1px; background: var(--border); align-self: center;
+}
+.lp-kicker {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--fg-3);
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.lp-kicker::before {
+  content: ""; width: 6px; height: 6px; border-radius: 9999px;
+  background: var(--mint); display: inline-block;
+}
+
+/* ============================================================
+   Nav — floating pill (default) + flat variant
+   ============================================================ */
+.lp-nav-wrap {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 80;
+  padding: 18px 40px;
+  pointer-events: none;
+}
+.lp-nav-wrap > * { pointer-events: auto; }
+
+.lp-nav {
+  max-width: 1240px; margin: 0 auto;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 16px;
+  padding: 10px 12px 10px 22px;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, var(--shadow-1);
+}
+:root[data-theme="dark"] .lp-nav {
+  background: color-mix(in srgb, #1a1818 65%, transparent);
+}
+
+/* Flat variant — full-width bar, hairline */
+.lp-nav-wrap[data-style="flat"] { padding: 0; }
+.lp-nav-wrap[data-style="flat"] .lp-nav {
+  max-width: none; border-radius: 0; border: 0;
+  border-bottom: 1px solid var(--border);
+  padding: 16px clamp(24px, 6vw, 48px);
+  background: color-mix(in srgb, var(--bg) 80%, transparent);
+}
+
+.lp-nav__brand {
+  font-weight: 700; color: var(--fg); text-decoration: none;
+  letter-spacing: -0.01em; font-size: 15px; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.lp-nav__brand-dot {
+  width: 22px; height: 22px; border-radius: 9999px;
+  background: var(--mint);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: #0b0a0a; font-weight: 800; font-size: 11px;
+}
+.lp-nav__links {
+  display: flex; gap: 4px; align-items: center;
+  margin-left: auto;
+}
+.lp-nav__links a {
+  font-size: 13px; font-weight: 500; color: var(--fg-1); text-decoration: none;
+  padding: 8px 14px; border-radius: 9999px;
+  transition: background var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out);
+}
+.lp-nav__links a:hover { background: var(--surface-alt); color: var(--fg); }
+.lp-nav__links a.lp-nav__ext {
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.lp-nav__links a.lp-nav__ext svg { opacity: 0.7; transition: transform var(--dur-micro) var(--ease-out); }
+.lp-nav__links a.lp-nav__ext:hover svg { transform: translate(1px, -1px); opacity: 1; }
+.lp-nav__cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 14px 9px 16px; border-radius: 9999px;
+  background: var(--fg); color: var(--bg);
+  font-size: 13px; font-weight: 600; text-decoration: none;
+  white-space: nowrap;
+  transition: transform var(--dur-micro) var(--ease-out);
+}
+.lp-nav__cta:hover { transform: translateY(-1px); }
+.lp-nav__cta-arrow {
+  width: 18px; height: 18px; border-radius: 9999px;
+  background: var(--mint); color: #0b0a0a;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+
+/* Theme toggle — pill switch in nav */
+.lp-theme-toggle {
+  appearance: none; border: 0; background: transparent; padding: 0; margin: 0;
+  cursor: pointer; display: inline-flex; align-items: center;
+}
+.lp-theme-toggle__track {
+  position: relative; width: 46px; height: 26px; border-radius: 9999px;
+  background: var(--surface-alt); border: 1px solid var(--border);
+  transition: background var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+}
+.lp-theme-toggle__thumb {
+  position: absolute; top: 2px; left: 2px; width: 20px; height: 20px;
+  border-radius: 9999px; background: var(--surface);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--fg-1);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+  transition: left var(--dur-base) var(--ease-out),
+              background var(--dur-base) var(--ease-out),
+              color var(--dur-base) var(--ease-out);
+}
+.lp-theme-toggle.is-dark .lp-theme-toggle__thumb {
+  left: 22px; background: var(--mint); color: #0b0a0a;
+}
+
+/* ============================================================
+   Hero
+   ============================================================ */
+.lp-hero { padding: clamp(160px, 20vw, 240px) 0 clamp(80px, 12vw, 140px); position: relative; overflow: hidden; }
+
+/* Ambient mint blur — soft brand glow behind the hero */
+.lp-hero::before,
+.lp-hero::after {
+  content: "";
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(120px);
+  opacity: 0.55;
+  background: var(--mint);
+}
+.lp-hero::before {
+  width: 460px; height: 460px;
+  top: 120px; right: 80px;
+  opacity: 0.32;
+}
+.lp-hero::after {
+  width: 340px; height: 340px;
+  bottom: 80px; left: 80px;
+  opacity: 0.22;
+  background: color-mix(in srgb, var(--mint) 80%, white);
+}
+:root[data-theme="dark"] .lp-hero::before { opacity: 0.22; }
+:root[data-theme="dark"] .lp-hero::after  { opacity: 0.18; background: var(--mint); }
+
+.lp-hero .lp-wrap { position: relative; z-index: 1; }
+.lp-hero__row {
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  margin-bottom: 56px;
+}
+.lp-hero__avail {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 8px 14px 8px 12px;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
+  font-size: 13px; font-weight: 500; color: var(--fg-1);
+  white-space: nowrap;
+}
+.lp-hero__avail-dot {
+  width: 16px; height: 16px; border-radius: 9999px;
+  background: var(--mint);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--mint) 20%, transparent);
+  animation: lp-pulse 2.4s ease-in-out infinite;
+}
+@keyframes lp-pulse { 0%,100% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--mint) 20%, transparent); } 50% { box-shadow: 0 0 0 9px color-mix(in srgb, var(--mint) 8%, transparent); } }
+
+.lp-hero__loc {
+  display: inline-flex; align-items: center; gap: 14px;
+  font-size: 13px; color: var(--fg-2);
+}
+
+.lp-hero__display {
+  font-weight: 800;
+  font-size: clamp(38px, 6.6vw, 104px);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  margin: 0;
+  max-width: 18ch;
+  color: var(--fg);
+  text-wrap: balance;
+}
+.lp-hero__display em {
+  font-style: normal;
+  color: var(--fg-3);
+  font-weight: 800;
+}
+.lp-hero__display .accent {
+  background: linear-gradient(180deg, var(--mint), color-mix(in srgb, var(--mint) 85%, var(--fg)) );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-style: italic;
+  font-weight: 800;
+}
+
+.lp-hero__sub {
+  margin-top: 80px;
+  display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: end;
+  border-top: 1px solid var(--border);
+  padding-top: 40px;
+}
+.lp-hero__role {
+  display: inline-flex; align-items: center; gap: 14px;
+  font-size: 20px; color: var(--fg-1); font-weight: 500;
+}
+.lp-hero__role-dot {
+  width: 36px; height: 36px; border-radius: 9999px;
+  background: var(--mint);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: #0b0a0a;
+}
+.lp-hero__sub-meta { display: flex; gap: 28px; font-size: 13px; color: var(--fg-2); }
+.lp-hero__sub-meta b { color: var(--fg); display: block; font-weight: 600; font-size: 15px; margin-bottom: 2px; }
+
+@media (max-width: 720px) {
+  .lp-hero__sub { grid-template-columns: 1fr; }
+  .lp-hero__sub-meta { flex-wrap: wrap; gap: 18px; }
+}
+
+/* ============================================================
+   Bold direction — confident hero with mint block
+   ============================================================ */
+[data-direction="bold"] .lp-hero {
+  padding-bottom: 0;
+}
+[data-direction="bold"] .lp-hero__display em { color: var(--fg-2); }
+[data-direction="bold"] .lp-hero__display .accent {
+  background: none;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  color: var(--mint);
+  font-style: normal;
+  position: relative;
+  display: inline-block;
+  padding: 0 8px;
+  margin-left: -4px;
+  font-style: italic;
+}
+[data-direction="bold"] .lp-hero__display .accent::before {
+  content: ""; position: absolute; inset: 8% -2% 12% -2%;
+  background: var(--mint-soft);
+  border-radius: 16px;
+  z-index: -1;
+}
+
+/* ============================================================
+   Marquee — secondary tag line under hero (Bold only)
+   ============================================================ */
+.lp-marquee {
+  overflow: hidden;
+  padding: 24px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  margin-top: 60px;
+}
+.lp-marquee__track {
+  display: inline-flex; gap: 56px; padding-right: 56px;
+  animation: lp-marquee 38s linear infinite;
+  white-space: nowrap;
+}
+.lp-marquee__item {
+  font-size: clamp(28px, 4.4vw, 56px);
+  font-weight: 700; letter-spacing: -0.022em; color: var(--fg);
+  display: inline-flex; align-items: center; gap: 56px;
+}
+.lp-marquee__item svg { color: var(--mint); width: 0.65em; height: 0.65em; }
+@keyframes lp-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ============================================================
+   Sticky-scroll work showcase (default)
+   ============================================================ */
+.lp-sticky { position: relative; }
+.lp-sticky__grid { display: grid; grid-template-columns: 1fr 1.05fr; gap: 80px; }
+
+.lp-sticky__panel {
+  position: sticky; top: 120px;
+  height: fit-content;
+  padding: 32px 0;
+}
+.lp-sticky__pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 12px; border-radius: 9999px;
+  background: var(--surface-alt);
+  font-size: 12px; font-weight: 500; color: var(--fg-2);
+  border: 1px solid var(--border);
+  margin-bottom: 22px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.lp-sticky__num { color: var(--mint); font-weight: 700; }
+.lp-sticky__title {
+  font-weight: 700;
+  font-size: clamp(32px, 4.2vw, 56px);
+  line-height: 1.05;
+  letter-spacing: -0.022em;
+  margin: 0 0 18px;
+  text-wrap: balance;
+  color: var(--fg);
+}
+.lp-sticky__desc {
+  font-size: 17px; color: var(--fg-1); line-height: 1.6;
+  max-width: 36ch; margin: 0 0 24px;
+}
+.lp-sticky__tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 28px; }
+.lp-chip {
+  display: inline-flex; align-items: center; height: 28px; padding: 0 12px;
+  border-radius: 9999px; border: 1px solid var(--border); background: transparent;
+  color: var(--fg-2); font-size: 12px; font-weight: 500;
+  white-space: nowrap;
+}
+[data-direction="bold"] .lp-chip {
+  background: var(--mint-soft); border-color: transparent; color: var(--mint-ink);
+}
+.lp-sticky__cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 12px 16px 12px 22px;
+  border-radius: 9999px;
+  background: var(--fg); color: var(--bg);
+  font-size: 14px; font-weight: 600; text-decoration: none;
+  white-space: nowrap;
+  transition: transform var(--dur-micro) var(--ease-out);
+}
+.lp-sticky__cta:hover { transform: translateY(-1px); }
+.lp-sticky__cta-arrow {
+  width: 22px; height: 22px; border-radius: 9999px;
+  background: var(--mint); color: #0b0a0a;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+
+.lp-sticky__media { display: flex; flex-direction: column; gap: 80px; }
+.lp-sticky__shot {
+  width: 100%;
+  aspect-ratio: 4/3;
+  border-radius: 28px;
+  overflow: hidden;
+  background: var(--surface-alt);
+  position: relative;
+}
+.lp-sticky__shot img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 800ms var(--ease-out), filter 600ms var(--ease-out);
+}
+.lp-sticky__shot:hover img { transform: scale(1.03); }
+.lp-sticky__shot::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--border) 50%, transparent) inset;
+  pointer-events: none;
+}
+[data-direction="bold"] .lp-sticky__shot:nth-child(odd) {
+  background: var(--mint-soft);
+}
+[data-direction="bold"] .lp-sticky__shot:nth-child(odd) img {
+  mix-blend-mode: multiply;
+}
+
+@media (max-width: 900px) {
+  .lp-sticky__grid { grid-template-columns: 1fr; gap: 40px; }
+  .lp-sticky__panel { position: static; padding: 0; }
+}
+
+/* ============================================================
+   Alternating rows (project layout variant)
+   ============================================================ */
+.lp-projects { display: flex; flex-direction: column; gap: 120px; }
+.lp-project { display: grid; grid-template-columns: 1fr 1.4fr; gap: 56px; align-items: center; }
+.lp-project--flip { grid-template-columns: 1.4fr 1fr; }
+.lp-project--flip .lp-project__meta { order: 2; }
+.lp-project--flip .lp-project__media { order: 1; }
+.lp-project__kicker { font-size: 11px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--fg-3); margin-bottom: 16px; }
+.lp-project__headline { font-weight: 700; font-size: clamp(28px, 3.6vw, 48px); line-height: 1.05; letter-spacing: -0.022em; margin: 0 0 22px; }
+.lp-project__tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 24px; }
+.lp-project__media {
+  display: block; border-radius: 28px; overflow: hidden;
+  background: var(--surface-alt); aspect-ratio: 4/3;
+  position: relative;
+}
+.lp-project__media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 600ms var(--ease-out); }
+.lp-project__media:hover img { transform: scale(1.04); }
+@media (max-width: 800px) {
+  .lp-project, .lp-project--flip { grid-template-columns: 1fr; gap: 22px; }
+}
+
+/* ============================================================
+   Grid layout (project layout variant)
+   ============================================================ */
+.lp-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+.lp-grid__card {
+  display: block; text-decoration: none; color: inherit;
+}
+.lp-grid__shot {
+  width: 100%; aspect-ratio: 4/3; border-radius: 24px;
+  overflow: hidden; background: var(--surface-alt);
+  margin-bottom: 22px; position: relative;
+}
+.lp-grid__shot img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 600ms var(--ease-out);
+}
+.lp-grid__card:hover .lp-grid__shot img { transform: scale(1.04); }
+.lp-grid__title { font-weight: 700; font-size: clamp(22px, 2.4vw, 32px); line-height: 1.1; letter-spacing: -0.018em; margin: 0 0 8px; text-wrap: balance; }
+.lp-grid__kicker { font-size: 11px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--fg-3); margin-bottom: 10px; }
+.lp-grid__tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+@media (max-width: 800px) {
+  .lp-grid { grid-template-columns: 1fr; gap: 40px; }
+}
+
+/* ============================================================
+   Inline hover-image link (used in About copy)
+   ============================================================ */
+.lp-hoverlink {
+  position: relative;
+  font-weight: 700;
+  color: var(--mint-ink);
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 100% 2px;
+  background-repeat: no-repeat;
+  background-position: 0 92%;
+  padding-bottom: 1px;
+  cursor: pointer;
+  transition: color var(--dur-micro) var(--ease-out),
+              background-size var(--dur-micro) var(--ease-out);
+}
+.lp-hoverlink:hover {
+  color: var(--fg);
+  background-size: 100% 3px;
+}
+:root[data-theme="dark"] .lp-hoverlink { color: var(--mint); }
+:root[data-theme="dark"] .lp-hoverlink:hover { color: var(--mint-soft); }
+
+.lp-hoverlink__preview {
+  position: fixed;
+  top: 0; left: 0;
+  width: 320px;
+  height: 220px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--surface-alt);
+  pointer-events: none;
+  z-index: 200;
+  opacity: 0;
+  filter: drop-shadow(0 18px 48px rgba(15, 18, 22, 0.28));
+  transition: opacity 220ms var(--ease-out);
+  will-change: transform, opacity;
+}
+.lp-hoverlink__preview img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 700ms var(--ease-out);
+}
+.lp-hoverlink__preview.is-on { opacity: 1; }
+.lp-hoverlink__preview.is-on img { transform: scale(1.04); }
+
+@media (max-width: 720px) {
+  .lp-hoverlink__preview { display: none; }
+}
+
+/* ============================================================
+   About — personal section
+   ============================================================ */
+.lp-about__grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: clamp(40px, 6vw, 96px);
+  align-items: start;
+}
+.lp-about__h {
+  font-weight: 700;
+  font-size: clamp(28px, 3.6vw, 48px);
+  line-height: 1.08;
+  letter-spacing: -0.022em;
+  margin: 0 0 28px;
+  text-wrap: balance;
+  color: var(--fg);
+  max-width: 22ch;
+}
+[data-direction="bold"] .lp-about__h::first-line {
+  /* keep the rhythm consistent across variants */
+}
+.lp-about__body p {
+  font-size: clamp(16px, 1.25vw, 18px);
+  line-height: 1.65;
+  color: var(--fg-1);
+  margin: 0 0 18px;
+  max-width: 56ch;
+}
+.lp-about__body p:last-child { margin-bottom: 0; }
+
+.lp-about__meta {
+  margin-top: 36px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 32px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+  max-width: 560px;
+}
+.lp-about__meta-item { display: flex; flex-direction: column; gap: 4px; }
+.lp-about__meta-k {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--fg-3);
+}
+.lp-about__meta-v {
+  font-size: 15px; color: var(--fg); font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* Portrait column */
+.lp-about__portrait {
+  position: sticky; top: 110px;
+  display: flex; flex-direction: column; align-items: stretch;
+  position: relative;
+}
+.lp-about__portrait-frame {
+  position: relative;
+  border-radius: 28px;
+  overflow: hidden;
+  background: var(--mint-soft);
+  aspect-ratio: 4/5;
+}
+.lp-about__portrait-frame::before {
+  /* Soft mint blob behind portrait — design system motif */
+  content: "";
+  position: absolute;
+  inset: 8% 6% 14% 6%;
+  border-radius: 24px;
+  background: var(--mint);
+  z-index: 0;
+}
+.lp-about__portrait-frame img {
+  position: relative; z-index: 1;
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.lp-about__portrait-frame::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--border) 60%, transparent) inset;
+  pointer-events: none; z-index: 2;
+}
+
+/* Rotating multilingual hello sticker */
+.lp-about__sticker {
+  position: absolute;
+  right: -22px; bottom: -22px;
+  width: 132px; height: 132px;
+  border-radius: 9999px;
+  background: var(--fg); color: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+  text-transform: uppercase;
+  overflow: hidden;
+  box-shadow: var(--shadow-2);
+}
+.lp-about__sticker span {
+  position: absolute;
+  inset: 0;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding-top: 12px;
+  transform-origin: 50% 66px;
+  animation: lp-sticker-rot 18s linear infinite;
+}
+.lp-about__sticker span:nth-child(1) { animation-delay: -0s; }
+.lp-about__sticker span:nth-child(2) { animation-delay: -4.5s; }
+.lp-about__sticker span:nth-child(3) { animation-delay: -9s; }
+.lp-about__sticker span:nth-child(4) { animation-delay: -13.5s; }
+@keyframes lp-sticker-rot {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+[data-direction="bold"] .lp-about__sticker {
+  background: var(--mint); color: #0b0a0a;
+}
+
+/* Currently strip */
+.lp-about__currently {
+  margin-top: clamp(60px, 8vw, 96px);
+  padding: 32px 0 0;
+  border-top: 1px solid var(--border);
+  display: grid; grid-template-columns: minmax(140px, 180px) 1fr; gap: 32px;
+  align-items: start;
+}
+.lp-about__currently .lp-kicker { padding-top: 4px; }
+.lp-about__cur-list {
+  list-style: none; padding: 0; margin: 0;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+}
+.lp-about__cur-list li {
+  display: flex; flex-direction: column; gap: 6px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.lp-about__cur-list li b {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--fg-3);
+}
+.lp-about__cur-list li span {
+  font-size: 16px; color: var(--fg); font-weight: 500;
+  letter-spacing: -0.01em; line-height: 1.4;
+}
+
+/* Off the clock — hobby photo grid */
+.lp-about__hobbies { margin-top: clamp(80px, 10vw, 140px); }
+.lp-about__photos {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-auto-rows: 180px;
+  gap: 16px;
+}
+.lp-about__photo {
+  position: relative;
+  margin: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--surface-alt);
+  grid-column: span 4;
+  grid-row: span 2;
+}
+.lp-about__photo--tall { grid-column: span 4; grid-row: span 3; }
+.lp-about__photo--wide { grid-column: span 8; grid-row: span 2; }
+.lp-about__photo img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 700ms var(--ease-out);
+}
+.lp-about__photo:hover img { transform: scale(1.04); }
+.lp-about__photo figcaption {
+  position: absolute; left: 12px; bottom: 12px;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--bg) 84%, transparent);
+  backdrop-filter: blur(8px);
+  font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--fg-1);
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+
+@media (max-width: 900px) {
+  .lp-about__grid { grid-template-columns: 1fr; gap: 48px; }
+  .lp-about__portrait { position: static; max-width: 420px; }
+  .lp-about__meta { grid-template-columns: 1fr 1fr; max-width: none; }
+  .lp-about__currently { grid-template-columns: 1fr; gap: 16px; }
+  .lp-about__cur-list { grid-template-columns: 1fr 1fr; gap: 18px; }
+  .lp-about__photos { grid-auto-rows: 140px; gap: 12px; }
+  .lp-about__photo,
+  .lp-about__photo--tall,
+  .lp-about__photo--wide { grid-column: span 6; grid-row: span 2; }
+}
+@media (max-width: 560px) {
+  .lp-about__cur-list { grid-template-columns: 1fr; }
+  .lp-about__photo,
+  .lp-about__photo--tall,
+  .lp-about__photo--wide { grid-column: span 12; grid-row: span 2; }
+}
+
+/* Instagram CTA under the hobby photos */
+.lp-about__cta {
+  margin-top: clamp(40px, 5vw, 64px);
+  display: flex; justify-content: center;
+}
+.lp-about__ig {
+  display: inline-flex; align-items: center; gap: 14px;
+  padding: 14px 22px 14px 18px;
+  border-radius: 9999px;
+  background: var(--fg); color: var(--bg);
+  font-size: 15px; font-weight: 600; text-decoration: none;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  transition: transform var(--dur-micro) var(--ease-out),
+              background var(--dur-micro) var(--ease-out);
+}
+.lp-about__ig:hover { transform: translateY(-2px); }
+.lp-about__ig-icon {
+  width: 32px; height: 32px; border-radius: 9999px;
+  background: var(--mint); color: #0b0a0a;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.lp-about__ig-arrow {
+  width: 22px; height: 22px; border-radius: 9999px;
+  background: color-mix(in srgb, var(--bg) 18%, transparent);
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: transform var(--dur-micro) var(--ease-out);
+}
+.lp-about__ig:hover .lp-about__ig-arrow { transform: translate(2px, -2px); }
+[data-direction="bold"] .lp-about__ig-icon { background: var(--mint); }
+
+/* Ambient mint blur behind experience + skills sections */
+#experience,
+#skills { position: relative; overflow: hidden; }
+#experience::before,
+#skills::after {
+  content: "";
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(140px);
+  background: var(--mint);
+  opacity: 0.18;
+}
+#experience::before {
+  width: 380px; height: 380px;
+  top: 140px; left: 140px;
+}
+#skills::after {
+  width: 440px; height: 440px;
+  bottom: 120px; right: 120px;
+  opacity: 0.22;
+  background: color-mix(in srgb, var(--mint) 90%, white);
+}
+:root[data-theme="dark"] #experience::before,
+:root[data-theme="dark"] #skills::after { opacity: 0.14; background: var(--mint); }
+
+#experience .lp-wrap,
+#skills .lp-wrap { position: relative; z-index: 1; }
+
+/* ============================================================
+   Resume rows
+   ============================================================ */
+.lp-resume { display: flex; flex-direction: column; }
+.lp-resume__row {
+  display: grid; grid-template-columns: 0.45fr 1.4fr 1fr 0.6fr; gap: 28px;
+  padding: 28px 8px;
+  border-top: 1px solid var(--border);
+  align-items: baseline;
+  position: relative;
+  transition: background var(--dur-micro) var(--ease-out), padding var(--dur-base) var(--ease-out);
+  border-radius: 0;
+}
+.lp-resume__row:last-child { border-bottom: 1px solid var(--border); }
+.lp-resume__row:hover {
+  background: var(--surface);
+  padding-left: 22px; padding-right: 22px;
+  border-radius: 18px;
+  border-color: transparent;
+}
+.lp-resume__row:hover + .lp-resume__row { border-top-color: transparent; }
+.lp-resume__year { font-size: 13px; color: var(--fg-3); font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+.lp-resume__co { font-size: 22px; font-weight: 600; color: var(--fg); letter-spacing: -0.012em; }
+.lp-resume__role { font-size: 15px; color: var(--fg-1); }
+.lp-resume__place { font-size: 13px; color: var(--fg-2); text-align: right; }
+@media (max-width: 800px) {
+  .lp-resume__row { grid-template-columns: 1fr; gap: 4px; padding: 22px 0; }
+  .lp-resume__place { text-align: left; }
+  .lp-resume__row:hover { padding: 22px 14px; }
+}
+
+/* ============================================================
+   Skills — chip grid + soft type
+   ============================================================ */
+.lp-skills {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 40px 80px;
+  align-items: start;
+}
+.lp-skills__group h4 {
+  font-size: 13px; color: var(--fg-2); font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  margin: 0 0 18px;
+}
+.lp-skills__list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; }
+.lp-skills__list li {
+  font-size: clamp(18px, 1.9vw, 24px);
+  font-weight: 500; color: var(--fg);
+  padding: 14px 0;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  letter-spacing: -0.01em;
+}
+.lp-skills__list li:first-child { border-top: 0; padding-top: 4px; }
+.lp-skills__list li span:last-child {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--fg-3);
+}
+[data-direction="bold"] .lp-skills__list li span:last-child {
+  color: var(--mint-ink);
+}
+@media (max-width: 800px) {
+  .lp-skills { grid-template-columns: 1fr; gap: 32px; }
+}
+
+/* ============================================================
+   Contact CTA — bold mint block (Bold) / quiet (Editorial)
+   ============================================================ */
+.lp-contact {
+  margin: clamp(60px, 8vw, 100px) 0 0;
+  border-radius: 32px;
+  padding: clamp(60px, 8vw, 120px) clamp(32px, 5vw, 80px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+[data-direction="bold"] .lp-contact {
+  background: var(--mint);
+  border-color: transparent;
+  color: #0b0a0a;
+}
+[data-direction="bold"] .lp-contact .lp-kicker { color: rgba(11,10,10,0.6); }
+[data-direction="bold"] .lp-contact .lp-kicker::before { background: #0b0a0a; }
+
+.lp-contact__inner { max-width: 880px; }
+.lp-contact__h {
+  font-weight: 800;
+  font-size: clamp(40px, 7vw, 96px);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  margin: 24px 0 36px;
+  text-wrap: balance;
+}
+[data-direction="bold"] .lp-contact__h { color: #0b0a0a; }
+.lp-contact__row {
+  display: flex; flex-wrap: wrap; gap: 14px; align-items: center;
+}
+.lp-contact__btn {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 16px 22px 16px 26px;
+  border-radius: 9999px;
+  background: var(--fg); color: var(--bg);
+  font-size: 16px; font-weight: 600; text-decoration: none;
+  white-space: nowrap;
+  transition: transform var(--dur-micro) var(--ease-out);
+}
+[data-direction="bold"] .lp-contact__btn { background: #0b0a0a; color: #fff; }
+.lp-contact__btn:hover { transform: translateY(-2px); }
+.lp-contact__btn-arrow {
+  width: 26px; height: 26px; border-radius: 9999px;
+  background: var(--mint); color: #0b0a0a;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+[data-direction="bold"] .lp-contact__btn-arrow { background: #fff; }
+.lp-contact__ghost {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 16px 22px; border-radius: 9999px;
+  font-size: 16px; font-weight: 600;
+  color: inherit; text-decoration: none;
+  border: 1px solid currentColor;
+  white-space: nowrap;
+  opacity: 0.85;
+  transition: opacity var(--dur-micro) var(--ease-out);
+}
+.lp-contact__ghost:hover { opacity: 1; }
+
+.lp-contact__decor {
+  position: absolute; right: -80px; bottom: -80px; width: 320px; height: 320px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, color-mix(in srgb, var(--mint) 30%, transparent), transparent 65%);
+  pointer-events: none;
+}
+[data-direction="bold"] .lp-contact__decor {
+  background: radial-gradient(circle, rgba(255,255,255,0.4), transparent 65%);
+}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+.lp-footer { padding: 64px 0 32px; }
+.lp-footer__wordmark {
+  font-weight: 800;
+  font-size: clamp(72px, 16vw, 240px);
+  line-height: 0.85; letter-spacing: -0.05em;
+  margin: 0 0 40px;
+  background: linear-gradient(180deg, var(--fg) 60%, var(--fg-3));
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+  text-wrap: balance;
+}
+.lp-footer__row {
+  display: grid; grid-template-columns: 1.4fr 1fr 1fr 0.8fr; gap: 32px;
+  padding-top: 32px; border-top: 1px solid var(--border);
+}
+.lp-footer__col h5 {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--fg-3); margin: 0 0 14px;
+}
+.lp-footer__col a, .lp-footer__col p {
+  display: block; font-size: 14px; color: var(--fg-1); text-decoration: none;
+  margin: 0 0 8px; line-height: 1.5;
+}
+.lp-footer__col a:hover { color: var(--fg); text-decoration: underline; text-underline-offset: 4px; }
+.lp-footer__base {
+  margin-top: 48px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px; color: var(--fg-3); letter-spacing: 0.04em;
+}
+@media (max-width: 800px) {
+  .lp-footer__row { grid-template-columns: 1fr 1fr; gap: 28px; }
+  .lp-footer__base { flex-direction: column; gap: 12px; align-items: flex-start; }
+}
+
+/* ============================================================
+   Reveal on scroll
+   ============================================================ */
+.lp-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out);
+  will-change: opacity, transform;
+}
+.lp-reveal.is-in {
+  opacity: 1; transform: none;
+}
+.lp-reveal[data-delay="1"] { transition-delay: 80ms; }
+.lp-reveal[data-delay="2"] { transition-delay: 160ms; }
+.lp-reveal[data-delay="3"] { transition-delay: 240ms; }
+
+/* ============================================================
+   Footnote: floating direction badge bottom-right
+   ============================================================ */
+.lp-edge-info {
+  position: fixed; right: 16px; bottom: 16px; z-index: 70;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 14px;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  font-size: 12px; color: var(--fg-2); font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.lp-edge-info b { color: var(--fg); font-weight: 600; }
+
+
+/* ===== case-study.css ===== */
+/* ============================================================
+   Case study — page-specific styles
+   Layered on top of tokens.css + styles.css.
+   ============================================================ */
+
+/* Hide the homepage's default nav-wrap style — we use our own */
+.cs-nav-wrap {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 80;
+  padding: 18px 40px;
+  pointer-events: none;
+}
+.cs-nav-wrap > * { pointer-events: auto; }
+.cs-nav {
+  max-width: 1240px; margin: 0 auto;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 16px;
+  padding: 10px 12px 10px 22px;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, var(--shadow-1);
+}
+:root[data-theme="dark"] .cs-nav {
+  background: color-mix(in srgb, #1a1818 65%, transparent);
+}
+.cs-nav__brand {
+  font-weight: 700; color: var(--fg); text-decoration: none;
+  letter-spacing: -0.01em; font-size: 15px;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.cs-nav__brand-dot {
+  width: 22px; height: 22px; border-radius: 9999px;
+  background: var(--mint);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: #0b0a0a; font-weight: 800; font-size: 11px;
+}
+.cs-nav__back {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 500; color: var(--fg-1); text-decoration: none;
+  padding: 8px 14px 8px 12px; border-radius: 9999px;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  transition: transform var(--dur-micro) var(--ease-out),
+              background var(--dur-micro) var(--ease-out);
+}
+.cs-nav__back:hover { background: var(--surface); transform: translateY(-1px); color: var(--fg); }
+.cs-nav__back-arrow {
+  display: inline-flex; align-items: center; justify-content: center;
+  transform: rotate(180deg);
+  line-height: 0;
+}
+.cs-nav__back-arrow svg { display: block; }
+
+/* ============================================================
+   Page layout — sticky side index + content
+   ============================================================ */
+.cs-shell {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 64px;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 140px 40px 120px;
+}
+.cs-content { min-width: 0; }
+@media (max-width: 1000px) {
+  .cs-shell { grid-template-columns: 1fr; gap: 24px; padding-top: 120px; }
+}
+@media (max-width: 800px) {
+  .cs-shell { padding-left: 22px; padding-right: 22px; }
+}
+
+/* ============================================================
+   Sticky side index
+   ============================================================ */
+.cs-index {
+  position: sticky; top: 110px;
+  align-self: start;
+  font-size: 13px;
+  display: flex; flex-direction: column;
+  gap: 0;
+  padding-left: 4px;
+}
+.cs-index__kicker {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--fg-3);
+  margin-bottom: 18px;
+}
+.cs-index__list { list-style: none; padding: 0; margin: 0; }
+.cs-index__item {
+  position: relative;
+  display: block;
+  padding: 10px 0 10px 22px;
+  text-decoration: none;
+  color: var(--fg-2);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  line-height: 1.3;
+  border-left: 1px solid var(--border);
+  margin-left: 4px;
+  transition: color var(--dur-micro) var(--ease-out);
+}
+.cs-index__item:hover { color: var(--fg); }
+.cs-index__item.is-active {
+  color: var(--fg); font-weight: 600;
+}
+.cs-index__item.is-active::before {
+  content: ""; position: absolute;
+  left: -1px; top: 50%; transform: translateY(-50%);
+  width: 3px; height: 22px; border-radius: 9999px;
+  background: var(--mint);
+}
+.cs-index__num {
+  font-size: 10px; color: var(--fg-3);
+  font-variant-numeric: tabular-nums; letter-spacing: 0.12em;
+  margin-right: 8px;
+}
+.cs-index__item.is-active .cs-index__num { color: var(--mint-ink); }
+:root[data-theme="dark"] .cs-index__item.is-active .cs-index__num { color: var(--mint); }
+
+@media (max-width: 1000px) {
+  .cs-index {
+    position: sticky; top: 78px; z-index: 50;
+    flex-direction: row; gap: 4px; overflow-x: auto;
+    padding: 12px 4px;
+    margin: 0 -22px;
+    background: color-mix(in srgb, var(--bg) 86%, transparent);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .cs-index__kicker { display: none; }
+  .cs-index__list { display: flex; gap: 4px; padding: 0 22px; }
+  .cs-index__item {
+    white-space: nowrap;
+    padding: 8px 14px; border-left: 0;
+    border-radius: 9999px;
+    background: var(--surface-alt);
+  }
+  .cs-index__item.is-active { background: var(--fg); color: var(--bg); }
+  .cs-index__item.is-active::before { display: none; }
+  .cs-index__item.is-active .cs-index__num { color: rgba(255,255,255,0.5); }
+  .cs-index__num { margin-right: 4px; }
+}
+
+/* ============================================================
+   Section scaffolding
+   ============================================================ */
+.cs-section {
+  padding: clamp(40px, 6vw, 80px) 0;
+  scroll-margin-top: 110px;
+}
+.cs-section + .cs-section { border-top: 1px solid var(--border); }
+.cs-section__kicker {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--fg-3);
+  margin: 0 0 22px;
+}
+.cs-section__kicker::before {
+  content: ""; width: 6px; height: 6px; border-radius: 9999px;
+  background: var(--mint);
+}
+.cs-section__h {
+  font-weight: 700;
+  font-size: clamp(28px, 3.8vw, 48px);
+  line-height: 1.06;
+  letter-spacing: -0.022em;
+  margin: 0 0 24px;
+  text-wrap: balance;
+  max-width: 22ch;
+}
+.cs-section__lede {
+  font-size: clamp(17px, 1.4vw, 20px);
+  line-height: 1.55;
+  color: var(--fg-1);
+  margin: 0 0 32px;
+  max-width: 62ch;
+}
+
+/* ============================================================
+   Hero
+   ============================================================ */
+.cs-hero {
+  position: relative;
+  padding: 0 0 clamp(40px, 6vw, 64px);
+  overflow: visible;
+}
+.cs-hero__breadcrumb {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 12px; color: var(--fg-3);
+  letter-spacing: 0.04em;
+  margin-bottom: 28px;
+}
+.cs-hero__breadcrumb a { color: inherit; text-decoration: none; }
+.cs-hero__breadcrumb a:hover { color: var(--fg); }
+.cs-hero__breadcrumb svg { opacity: 0.5; }
+
+.cs-hero__title {
+  font-weight: 800;
+  font-size: clamp(36px, 5.2vw, 76px);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  margin: 0 0 28px;
+  text-wrap: balance;
+  max-width: 18ch;
+}
+.cs-hero__title em {
+  font-style: normal;
+  color: var(--mint-ink);
+}
+:root[data-theme="dark"] .cs-hero__title em { color: var(--mint); }
+
+.cs-hero__sub {
+  font-size: clamp(17px, 1.4vw, 20px);
+  line-height: 1.55;
+  color: var(--fg-1);
+  max-width: 62ch;
+  margin: 0 0 44px;
+}
+
+.cs-hero__meta {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  padding: 24px 0 36px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.cs-hero__meta-k {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--fg-3);
+  display: block; margin-bottom: 6px;
+}
+.cs-hero__meta-v {
+  font-size: 15px; color: var(--fg); font-weight: 500;
+}
+.cs-hero__cover {
+  margin-top: 32px;
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--surface-alt);
+  aspect-ratio: 16/10;
+  position: relative;
+}
+.cs-hero__cover img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.cs-hero__cover::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--border) 60%, transparent) inset;
+  pointer-events: none;
+}
+
+@media (max-width: 720px) {
+  .cs-hero__meta { grid-template-columns: 1fr 1fr; }
+}
+
+/* ============================================================
+   Body copy (used in Context section)
+   ============================================================ */
+.cs-prose {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+.cs-prose p {
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--fg-1);
+  margin: 0 0 18px;
+  max-width: 50ch;
+}
+.cs-prose p:last-child { margin-bottom: 0; }
+.cs-stats {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 18px; overflow: hidden;
+}
+.cs-stat {
+  padding: 24px;
+  background: var(--surface);
+  display: flex; flex-direction: column; gap: 6px;
+}
+.cs-stat__v {
+  font-size: clamp(32px, 3vw, 44px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  line-height: 1;
+}
+.cs-stat__k {
+  font-size: 12px; color: var(--fg-2);
+  line-height: 1.4;
+}
+@media (max-width: 800px) {
+  .cs-prose { grid-template-columns: 1fr; gap: 32px; }
+}
+
+/* ============================================================
+   Process — phase cards
+   ============================================================ */
+.cs-phases {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+.cs-phase {
+  padding: 28px 28px 32px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--dur-micro) var(--ease-out),
+              border-color var(--dur-micro) var(--ease-out);
+}
+.cs-phase:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--mint) 40%, var(--border)); }
+.cs-phase__n {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--mint-ink);
+  margin-bottom: 14px;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+:root[data-theme="dark"] .cs-phase__n { color: var(--mint); }
+.cs-phase__n::before {
+  content: ""; width: 6px; height: 6px; border-radius: 9999px;
+  background: var(--mint);
+}
+.cs-phase__h {
+  font-size: 20px; font-weight: 700;
+  letter-spacing: -0.012em;
+  margin: 0 0 10px;
+  color: var(--fg);
+}
+.cs-phase__p {
+  font-size: 14.5px; line-height: 1.55;
+  color: var(--fg-1);
+  margin: 0 0 16px;
+}
+.cs-phase__list {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.cs-phase__list li {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--fg-2);
+  padding: 4px 10px; border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+@media (max-width: 720px) {
+  .cs-phases { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   Solution screens — featured shots with notes
+   ============================================================ */
+.cs-screens {
+  display: flex; flex-direction: column;
+  gap: clamp(40px, 5vw, 64px);
+}
+.cs-screen {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+.cs-screen--flip { grid-template-columns: 1fr 1.2fr; }
+.cs-screen--flip .cs-screen__notes { order: 2; }
+.cs-screen--flip .cs-screen__shot  { order: 1; }
+.cs-screen__shot {
+  border-radius: 22px; overflow: hidden;
+  background: var(--surface-alt);
+  aspect-ratio: 4/3; position: relative;
+}
+.cs-screen__shot img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.cs-screen__shot::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--border) 60%, transparent) inset;
+  pointer-events: none;
+}
+.cs-screen__tag {
+  display: inline-flex; align-items: center;
+  padding: 4px 10px; border-radius: 9999px;
+  background: var(--mint-soft); color: var(--mint-ink);
+  font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+:root[data-theme="dark"] .cs-screen__tag { background: var(--mint-soft); color: var(--mint); }
+.cs-screen__h {
+  font-size: clamp(22px, 2.2vw, 30px);
+  font-weight: 700;
+  letter-spacing: -0.018em;
+  margin: 0 0 12px;
+  color: var(--fg);
+  text-wrap: balance;
+}
+.cs-screen__p {
+  font-size: 16px; line-height: 1.6;
+  color: var(--fg-1);
+  margin: 0;
+  max-width: 42ch;
+}
+@media (max-width: 800px) {
+  .cs-screen, .cs-screen--flip {
+    grid-template-columns: 1fr; gap: 20px;
+  }
+  .cs-screen--flip .cs-screen__notes { order: 0; }
+  .cs-screen--flip .cs-screen__shot  { order: 1; }
+}
+
+/* ============================================================
+   Outcomes — big metrics + quote
+   ============================================================ */
+.cs-outcomes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 24px; overflow: hidden;
+  margin-bottom: 40px;
+}
+.cs-outcome {
+  background: var(--surface);
+  padding: 32px 28px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.cs-outcome__v {
+  font-size: clamp(40px, 4.8vw, 64px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  color: var(--fg);
+}
+.cs-outcome__v em {
+  font-style: normal; color: var(--mint-ink);
+}
+:root[data-theme="dark"] .cs-outcome__v em { color: var(--mint); }
+.cs-outcome__k {
+  font-size: 13px;
+  color: var(--fg-2);
+  line-height: 1.5;
+  margin-top: 4px;
+  max-width: 28ch;
+}
+@media (max-width: 720px) {
+  .cs-outcomes { grid-template-columns: 1fr; }
+}
+
+.cs-quote {
+  padding: 36px clamp(28px, 4vw, 56px);
+  border-radius: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  position: relative;
+}
+.cs-quote__mark {
+  position: absolute; top: 20px; left: 24px;
+  font-size: 64px; line-height: 1; font-weight: 800;
+  color: var(--mint);
+  opacity: 0.35;
+  font-family: serif;
+}
+.cs-quote__body {
+  font-size: clamp(18px, 1.8vw, 24px);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--fg);
+  margin: 0 0 18px;
+  text-wrap: balance;
+  letter-spacing: -0.012em;
+  padding-left: 44px;
+}
+.cs-quote__by {
+  display: flex; align-items: center; gap: 12px;
+  padding-left: 44px;
+}
+.cs-quote__avatar {
+  width: 36px; height: 36px; border-radius: 9999px;
+  background: var(--surface-alt);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--fg-2); font-weight: 700; font-size: 13px;
+  letter-spacing: 0.04em;
+}
+.cs-quote__name {
+  font-size: 14px; font-weight: 600; color: var(--fg);
+}
+.cs-quote__role {
+  font-size: 13px; color: var(--fg-2);
+}
+
+/* ============================================================
+   Gallery
+   ============================================================ */
+.cs-gallery {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-auto-rows: 200px;
+  gap: 16px;
+}
+.cs-gallery__item {
+  border-radius: 18px; overflow: hidden;
+  background: var(--surface-alt);
+  position: relative;
+}
+.cs-gallery__item img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 700ms var(--ease-out);
+}
+.cs-gallery__item:hover img { transform: scale(1.04); }
+.cs-gallery__a { grid-column: span 8; grid-row: span 2; }
+.cs-gallery__b { grid-column: span 4; grid-row: span 2; }
+.cs-gallery__c { grid-column: span 4; grid-row: span 2; }
+.cs-gallery__d { grid-column: span 4; grid-row: span 2; }
+.cs-gallery__e { grid-column: span 4; grid-row: span 2; }
+@media (max-width: 800px) {
+  .cs-gallery { grid-auto-rows: 160px; }
+  .cs-gallery__a { grid-column: span 12; }
+  .cs-gallery__b,
+  .cs-gallery__c,
+  .cs-gallery__d,
+  .cs-gallery__e { grid-column: span 6; }
+}
+@media (max-width: 540px) {
+  .cs-gallery__b,
+  .cs-gallery__c,
+  .cs-gallery__d,
+  .cs-gallery__e { grid-column: span 12; }
+}
+
+/* ============================================================
+   Next project link
+   ============================================================ */
+.cs-next {
+  margin-top: clamp(80px, 10vw, 140px);
+  padding: clamp(40px, 6vw, 80px) clamp(28px, 4vw, 56px);
+  border-radius: 28px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 32px;
+  text-decoration: none; color: inherit;
+  position: relative; overflow: hidden;
+  transition: transform var(--dur-micro) var(--ease-out),
+              border-color var(--dur-micro) var(--ease-out);
+}
+.cs-next:hover {
+  border-color: color-mix(in srgb, var(--mint) 40%, var(--border));
+  transform: translateY(-2px);
+}
+.cs-next:hover .cs-next__arrow { transform: translate(8px, 0); }
+.cs-next__kicker {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--fg-3);
+  margin-bottom: 12px;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.cs-next__kicker::before {
+  content: ""; width: 6px; height: 6px; border-radius: 9999px;
+  background: var(--mint);
+}
+.cs-next__title {
+  font-size: clamp(28px, 3.4vw, 44px);
+  font-weight: 700;
+  letter-spacing: -0.022em;
+  line-height: 1.05;
+  margin: 0;
+  text-wrap: balance;
+  color: var(--fg);
+  max-width: 22ch;
+}
+.cs-next__arrow {
+  width: 64px; height: 64px;
+  border-radius: 9999px;
+  background: var(--mint); color: #0b0a0a;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: transform var(--dur-base) var(--ease-out);
+  flex-shrink: 0;
+}
+@media (max-width: 720px) {
+  .cs-next { grid-template-columns: 1fr; }
+  .cs-next__arrow { width: 52px; height: 52px; }
+}
+
+/* ============================================================
+   Subtle ambient mint glow behind the hero (same DNA as homepage)
+   ============================================================ */
+.cs-hero::before {
+  content: "";
+  position: absolute;
+  top: -120px; right: -160px;
+  width: 480px; height: 480px;
+  border-radius: 9999px;
+  background: var(--mint);
+  filter: blur(120px);
+  opacity: 0.25;
+  z-index: -1;
+  pointer-events: none;
+}
+:root[data-theme="dark"] .cs-hero::before { opacity: 0.18; }
+
+  </style>
+</head>
+<body>
+  <div class="lp-grain" aria-hidden="true"></div>
+
+  <div class="cs-nav-wrap">
+    <nav class="cs-nav" aria-label="Primary">
+      <a class="cs-nav__back" href="../index.html#work">
+        <span class="cs-nav__back-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span>
+        Back to works
+      </a>
+      <button type="button" class="lp-theme-toggle" id="themeToggle" aria-label="Switch to dark theme" title="Switch to dark theme">
+        <span class="lp-theme-toggle__track">
+          <span class="lp-theme-toggle__thumb" id="themeThumb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg></span>
+        </span>
+      </button>
+    </nav>
+  </div>
+
+  <main>
+    <div class="cs-shell">
+      <aside class="cs-index" aria-label="On this page">
+        <div class="cs-index__kicker">On this page</div>
+        <ul class="cs-index__list">
+            <li><a href="#overview" class="cs-index__item is-active" data-spy="overview"><span class="cs-index__num">01</span>Overview</a></li>
+            <li><a href="#context" class="cs-index__item" data-spy="context"><span class="cs-index__num">02</span>Context</a></li>
+            <li><a href="#process" class="cs-index__item" data-spy="process"><span class="cs-index__num">03</span>Process</a></li>
+            <li><a href="#solution" class="cs-index__item" data-spy="solution"><span class="cs-index__num">04</span>Solution</a></li>
+            <li><a href="#outcomes" class="cs-index__item" data-spy="outcomes"><span class="cs-index__num">05</span>Outcomes</a></li>
+            <li><a href="#gallery" class="cs-index__item" data-spy="gallery"><span class="cs-index__num">06</span>Gallery</a></li>
+        </ul>
+      </aside>
+
+      <div class="cs-content">
+        <section class="cs-section cs-hero" id="overview">
+          <div class="cs-hero__breadcrumb lp-reveal">
+            <a href="../index.html">Work</a>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+            <span>Tickmill · Trading Platform</span>
+          </div>
+
+          <h1 class="cs-hero__title lp-reveal" data-delay="1">Bringing transparency to premium<em> trading products.</em></h1>
+          <p class="cs-hero__sub lp-reveal" data-delay="2">Redesigned a complex multi-asset trading platform around a clarity-first information architecture — replacing a wall of blinking numbers with a calm, confident interface that retail traders could actually read under pressure.</p>
+
+          <div class="cs-hero__meta lp-reveal" data-delay="3">
+            <div><span class="cs-hero__meta-k">Project</span><span class="cs-hero__meta-v">Tickmill</span></div>
+            <div><span class="cs-hero__meta-k">Year</span><span class="cs-hero__meta-v">2022 — 2023</span></div>
+            <div><span class="cs-hero__meta-k">Role</span><span class="cs-hero__meta-v">Senior Product Designer</span></div>
+            <div><span class="cs-hero__meta-k">Duration</span><span class="cs-hero__meta-v">9 months</span></div>
+          </div>
+
+          <div class="cs-hero__cover lp-reveal" data-delay="3">
+            <img src="../assets/project-justride-1.png" alt="Tickmill product overview">
+          </div>
+        </section>
+
+        <section class="cs-section" id="context">
+          <span class="cs-section__kicker">02 · Context</span>
+          <h2 class="cs-section__h lp-reveal">A powerful platform that overwhelmed the people using it.</h2>
+          <p class="cs-section__lede lp-reveal">Tickmill gives retail traders access to forex, indices and futures with institutional-grade execution. But the interface had grown by accretion — every new instrument and order type bolted onto the same dense screen, until new traders bounced and experienced ones built their own workarounds.</p>
+
+          <div class="cs-prose lp-reveal">
+            <div>
+              <p>I led the redesign of the core trading surface across web and mobile. The remit was deliberately narrow at first: make the act of placing, monitoring and closing a trade feel calm and legible — without dumbing down the tooling that power users depend on.</p>
+              <p>The tension ran through every decision. Transparency means showing spreads, swaps, margin and risk honestly — but density is what makes a screen unreadable. The work was about hierarchy, not subtraction: deciding what earns the eye first, and what waits one tap away.</p>
+            </div>
+            <div class="cs-stats">
+              <div class="cs-stat"><span class="cs-stat__v">4</span><span class="cs-stat__k">Asset classes unified under one order ticket</span></div>
+              <div class="cs-stat"><span class="cs-stat__v">60+</span><span class="cs-stat__k">Distinct data points triaged into a clear hierarchy</span></div>
+              <div class="cs-stat"><span class="cs-stat__v">2</span><span class="cs-stat__k">Surfaces redesigned in lockstep: web + mobile</span></div>
+              <div class="cs-stat"><span class="cs-stat__v">0</span><span class="cs-stat__k">Trading features removed — only reorganised</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="cs-section" id="process">
+          <span class="cs-section__kicker">03 · Process</span>
+          <h2 class="cs-section__h lp-reveal">From trader interviews to a tested, calmer terminal.</h2>
+          <p class="cs-section__lede lp-reveal">Four phases, run with a live brokerage that could not afford downtime. Every change was validated against real trading behaviour before it shipped.</p>
+
+          <div class="cs-phases">
+
+          <div class="cs-phase lp-reveal">
+            <span class="cs-phase__n">Phase 01</span>
+            <h3 class="cs-phase__h">Trader research</h3>
+            <p class="cs-phase__p">Interviewed 22 traders from first-deposit beginners to high-volume scalpers. Ran diary studies during live market hours to see where the interface actually failed them.</p>
+            <ul class="cs-phase__list">
+              <li>Interviews</li>
+              <li>Diary study</li>
+              <li>Analytics</li>
+            </ul>
+          </div>
+
+          <div class="cs-phase lp-reveal">
+            <span class="cs-phase__n">Phase 02</span>
+            <h3 class="cs-phase__h">Hierarchy & IA</h3>
+            <p class="cs-phase__p">Rebuilt the screen around a single question — “what does a trader need to decide right now?” Demoted reference data, promoted position state and risk.</p>
+            <ul class="cs-phase__list">
+              <li>IA</li>
+              <li>Hierarchy</li>
+              <li>Wireframes</li>
+            </ul>
+          </div>
+
+          <div class="cs-phase lp-reveal">
+            <span class="cs-phase__n">Phase 03</span>
+            <h3 class="cs-phase__h">Prototype & pressure-test</h3>
+            <p class="cs-phase__p">Built a clickable terminal and tested it in simulated volatile sessions. Measured time-to-place and error rates against the legacy screen across three rounds.</p>
+            <ul class="cs-phase__list">
+              <li>Prototype</li>
+              <li>Usability</li>
+              <li>3 rounds</li>
+            </ul>
+          </div>
+
+          <div class="cs-phase lp-reveal">
+            <span class="cs-phase__n">Phase 04</span>
+            <h3 class="cs-phase__h">Design system & handoff</h3>
+            <p class="cs-phase__p">Codified a dark-first component library tuned for dense financial data — number formatting, state colours, and motion that signals without distracting.</p>
+            <ul class="cs-phase__list">
+              <li>Design system</li>
+              <li>Tokens</li>
+              <li>Handoff</li>
+            </ul>
+          </div>
+          </div>
+        </section>
+
+        <section class="cs-section" id="solution">
+          <span class="cs-section__kicker">04 · Solution</span>
+          <h2 class="cs-section__h lp-reveal">One order ticket, a calmer dashboard, a mobile that keeps up.</h2>
+          <p class="cs-section__lede lp-reveal">The redesign met the trader at three moments: scanning the market, committing to a position, and managing risk on the move. Each got a focused surface.</p>
+
+          <div class="cs-screens">
+            <article class="cs-screen lp-reveal">
+              <div class="cs-screen__notes">
+                <span class="cs-screen__tag">Trading dashboard</span>
+                <h3 class="cs-screen__h">A workspace that answers “where do I stand?” at a glance.</h3>
+                <p class="cs-screen__p">Open positions, P&L and exposure now lead the screen, with watchlists and charting arranged around them. Colour is reserved for state — green and red mean money, never decoration.</p>
+              </div>
+              <div class="cs-screen__shot">
+                <img src="../assets/project-justride-1.png" alt="Tickmill trading dashboard">
+              </div>
+            </article>
+
+            <article class="cs-screen cs-screen--flip lp-reveal">
+              <div class="cs-screen__shot">
+                <img src="../assets/project-justride-2.png" alt="Tickmill order ticket">
+              </div>
+              <div class="cs-screen__notes">
+                <span class="cs-screen__tag">Order ticket</span>
+                <h3 class="cs-screen__h">One ticket that handles every asset class honestly.</h3>
+                <p class="cs-screen__p">Spread, swap and margin are shown before the trader commits, not buried in a tooltip. The same ticket flexes from a simple market order to a fully conditional bracket without changing its shape.</p>
+              </div>
+            </article>
+
+            <article class="cs-screen lp-reveal">
+              <div class="cs-screen__notes">
+                <span class="cs-screen__tag">Mobile terminal</span>
+                <h3 class="cs-screen__h">Full-fat trading that fits in one hand.</h3>
+                <p class="cs-screen__p">The mobile build keeps position management and risk controls a thumb-reach away. Critical actions — close, modify, hedge — never hide behind a menu when the market is moving.</p>
+              </div>
+              <div class="cs-screen__shot">
+                <img src="../assets/project-justride-1.png" alt="Tickmill mobile terminal" style="object-position: center top;">
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="cs-section" id="outcomes">
+          <span class="cs-section__kicker">05 · Outcomes</span>
+          <h2 class="cs-section__h lp-reveal">Faster to act, easier to trust, lighter on support.</h2>
+          <p class="cs-section__lede lp-reveal">The new terminal rolled out to retail clients in two regions first. The signal was strong enough that the global rollout was pulled forward a quarter.</p>
+
+          <div class="cs-outcomes lp-reveal">
+            <div class="cs-outcome"><span class="cs-outcome__v"><em>−38%</em></span><span class="cs-outcome__k">Time to place a first trade for newly funded accounts</span></div>
+            <div class="cs-outcome"><span class="cs-outcome__v"><em>+24%</em></span><span class="cs-outcome__k">Thirty-day retention among first-time traders</span></div>
+            <div class="cs-outcome"><span class="cs-outcome__v"><em>−29%</em></span><span class="cs-outcome__k">Support tickets tagged “where do I see…?”</span></div>
+          </div>
+
+          <figure class="cs-quote lp-reveal">
+            <span class="cs-quote__mark" aria-hidden="true">"</span>
+            <blockquote class="cs-quote__body">Lander made a genuinely complex product feel calm without hiding the things that matter. Our traders trust the screen more — and that trust is the whole business.</blockquote>
+            <figcaption class="cs-quote__by">
+              <span class="cs-quote__avatar">DK</span>
+              <div>
+                <div class="cs-quote__name">Dario Koval</div>
+                <div class="cs-quote__role">Head of Product, Tickmill</div>
+              </div>
+            </figcaption>
+          </figure>
+        </section>
+
+        <section class="cs-section" id="gallery">
+          <span class="cs-section__kicker">06 · Gallery</span>
+          <h2 class="cs-section__h lp-reveal">A look at the shipped terminal.</h2>
+
+          <div class="cs-gallery">
+            <figure class="cs-gallery__item cs-gallery__a lp-reveal"><img src="../assets/project-justride-1.png" alt="Dashboard overview"></figure>
+            <figure class="cs-gallery__item cs-gallery__b lp-reveal" data-delay="1"><img src="../assets/project-justride-2.png" alt="Order ticket detail"></figure>
+            <figure class="cs-gallery__item cs-gallery__c lp-reveal" data-delay="1"><img src="../assets/project-justride-2.png" alt="Risk panel"></figure>
+            <figure class="cs-gallery__item cs-gallery__d lp-reveal" data-delay="2"><img src="../assets/project-justride-1.png" alt="Mobile terminal"></figure>
+            <figure class="cs-gallery__item cs-gallery__e lp-reveal" data-delay="2"><img src="../assets/project-justride-1.png" alt="Watchlist state" style="object-position: left center;"></figure>
+          </div>
+
+          <a class="cs-next lp-reveal" href="./hubpay.html">
+            <div>
+              <div class="cs-next__kicker">Next project · 03</div>
+              <h3 class="cs-next__title">Sending money abroad — without the friction or the fees.</h3>
+            </div>
+            <span class="cs-next__arrow" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span>
+          </a>
+        </section>
+      </div>
+    </div>
+
+    <footer class="lp-footer">
+      <div class="lp-wrap">
+        <div class="lp-footer__wordmark">Lander Arregi</div>
+        <div class="lp-footer__row">
+          <div class="lp-footer__col">
+            <h5>About</h5>
+            <p>Senior product designer based in Barcelona, working remotely with teams worldwide.</p>
+          </div>
+          <div class="lp-footer__col">
+            <h5>Elsewhere</h5>
+            <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+            <a href="https://instagram.com/larregi" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+          </div>
+          <div class="lp-footer__col">
+            <h5>Sections</h5>
+            <a href="../index.html#work">Selected work</a>
+            <a href="../index.html#experience">Experience</a>
+            <a href="../index.html#skills">Skills</a>
+            <a href="../index.html#contact">Contact</a>
+          </div>
+          <div class="lp-footer__col">
+            <h5>Contact</h5>
+            <a href="mailto:lander.arregiz@gmail.com">lander.arregiz@gmail.com</a>
+            <p>Barcelona, ES</p>
+          </div>
+        </div>
+        <div class="lp-footer__base">
+          <span>© 2026 Lander Arregi · Design and developed with care</span>
+          <span>v2.0 · Built in HTML</span>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+  (function () {
+    var STORAGE_KEY = 'la-theme';
+    document.documentElement.style.setProperty('--grain-bg', "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.7 0'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>\")");
+
+    var SUN = "<svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"4\"></circle><path d=\"M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41\"></path></svg>";
+    var MOON = "<svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z\"></path></svg>";
+    var toggle = document.getElementById('themeToggle');
+    var thumb = document.getElementById('themeThumb');
+    function syncToggle() {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.classList.toggle('is-dark', isDark);
+      thumb.innerHTML = isDark ? MOON : SUN;
+      var next = isDark ? 'light' : 'dark';
+      toggle.setAttribute('aria-label', 'Switch to ' + next + ' theme');
+      toggle.setAttribute('title', 'Switch to ' + next + ' theme');
+    }
+    syncToggle();
+    toggle.addEventListener('click', function () {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      var next = isDark ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      document.documentElement.setAttribute('data-theme-pref', next);
+      localStorage.setItem(STORAGE_KEY, next);
+      syncToggle();
+    });
+
+    var revealEls = document.querySelectorAll('.lp-reveal');
+    var revealIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('is-in'); revealIO.unobserve(e.target); }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+    revealEls.forEach(function (el) { revealIO.observe(el); });
+
+    var spyLinks = Array.prototype.slice.call(document.querySelectorAll('.cs-index__item'));
+    var spyTargets = spyLinks.map(function (a) { return document.getElementById(a.getAttribute('data-spy')); }).filter(Boolean);
+    var spyIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          var id = e.target.id;
+          spyLinks.forEach(function (a) { a.classList.toggle('is-active', a.getAttribute('data-spy') === id); });
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+    spyTargets.forEach(function (el) { spyIO.observe(el); });
+  })();
+  </script>
+</body>
+</html>
