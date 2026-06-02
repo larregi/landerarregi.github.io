@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tickmill — Case Study · Lander Arregi</title>
-  <meta name="description" content="Redesigning a premium trading platform around transparency — a calm, clarity-first dashboard for retail traders.">
+  <meta name="description" content="Designing clarity into complex financial flows — onboarding, wallets, transaction history and compliance documentation for a multi-regulated trading platform.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1298,6 +1298,10 @@ body, .lp-nav, .lp-chip, .lp-project__media,
   padding: 18px 40px;
   pointer-events: none;
 }
+@media (max-width: 800px) {
+  .cs-nav-wrap { padding: 12px 16px; }
+  .cs-nav { padding: 8px 10px 8px 16px; }
+}
 .cs-nav-wrap > * { pointer-events: auto; }
 .cs-nav {
   max-width: 1240px; margin: 0 auto;
@@ -1355,10 +1359,10 @@ body, .lp-nav, .lp-chip, .lp-project__media,
 }
 .cs-content { min-width: 0; }
 @media (max-width: 1000px) {
-  .cs-shell { grid-template-columns: 1fr; gap: 24px; padding-top: 120px; }
+  .cs-shell { grid-template-columns: 1fr; gap: 0; padding-top: 100px; }
 }
 @media (max-width: 800px) {
-  .cs-shell { padding-left: 22px; padding-right: 22px; }
+  .cs-shell { padding-left: 22px; padding-right: 22px; padding-top: 90px; }
 }
 
 /* ============================================================
@@ -1411,26 +1415,35 @@ body, .lp-nav, .lp-chip, .lp-project__media,
 
 @media (max-width: 1000px) {
   .cs-index {
-    position: sticky; top: 78px; z-index: 50;
+    position: sticky; top: 64px; z-index: 50;
     flex-direction: row; gap: 4px; overflow-x: auto;
-    padding: 12px 4px;
+    padding: 10px 22px;
     margin: 0 -22px;
-    background: color-mix(in srgb, var(--bg) 86%, transparent);
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
     backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--border);
+    /* hide scrollbar */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
+  .cs-index::-webkit-scrollbar { display: none; }
   .cs-index__kicker { display: none; }
-  .cs-index__list { display: flex; gap: 4px; padding: 0 22px; }
+  .cs-index__list { display: flex; gap: 6px; padding: 0; white-space: nowrap; }
   .cs-index__item {
     white-space: nowrap;
-    padding: 8px 14px; border-left: 0;
+    padding: 7px 14px; border-left: 0;
     border-radius: 9999px;
     background: var(--surface-alt);
+    font-size: 12px;
   }
   .cs-index__item.is-active { background: var(--fg); color: var(--bg); }
   .cs-index__item.is-active::before { display: none; }
   .cs-index__item.is-active .cs-index__num { color: rgba(255,255,255,0.5); }
   .cs-index__num { margin-right: 4px; }
+}
+@media (max-width: 800px) {
+  .cs-index { top: 58px; }
 }
 
 /* ============================================================
@@ -1439,6 +1452,9 @@ body, .lp-nav, .lp-chip, .lp-project__media,
 .cs-section {
   padding: clamp(40px, 6vw, 80px) 0;
   scroll-margin-top: 110px;
+}
+@media (max-width: 1000px) {
+  .cs-section { scroll-margin-top: 120px; }
 }
 .cs-section + .cs-section { border-top: 1px solid var(--border); }
 .cs-section__kicker {
@@ -1529,9 +1545,12 @@ body, .lp-nav, .lp-chip, .lp-project__media,
   margin-top: 32px;
   border-radius: 24px;
   overflow: hidden;
-  background: var(--surface-alt);
+  background: rgba(204, 0, 0, 0.40);
   aspect-ratio: 16/10;
   position: relative;
+}
+:root[data-theme="dark"] .cs-hero__cover {
+  background: rgba(180, 0, 0, 0.30);
 }
 .cs-hero__cover img {
   width: 100%; height: 100%; object-fit: cover; display: block;
@@ -1826,6 +1845,58 @@ body, .lp-nav, .lp-chip, .lp-project__media,
 /* ============================================================
    Next project link
    ============================================================ */
+
+/* ============================================================
+   Mobile shots grid — 4-up for onboarding screenshots
+   ============================================================ */
+.cs-mobile-shots {
+  margin-top: 48px;
+}
+.cs-mobile-shots__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.cs-mobile-shot {
+  margin: 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--surface-alt);
+  aspect-ratio: 9/16;
+}
+.cs-mobile-shot img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+@media (max-width: 800px) {
+  .cs-mobile-shots__grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .cs-mobile-shots__grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+}
+
+.cs-outcome-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.cs-outcome-list li {
+  padding-left: 20px;
+  position: relative;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--fg-1);
+}
+.cs-outcome-list li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--mint);
+  font-weight: var(--fw-medium);
+}
+
 .cs-next {
   margin-top: clamp(80px, 10vw, 140px);
   padding: clamp(40px, 6vw, 80px) clamp(28px, 4vw, 56px);
@@ -1916,14 +1987,11 @@ body, .lp-nav, .lp-chip, .lp-project__media,
     <div class="cs-shell">
       <aside class="cs-index" aria-label="On this page">
         <div class="cs-index__kicker">On this page</div>
-        <ul class="cs-index__list">
             <li><a href="#overview" class="cs-index__item is-active" data-spy="overview"><span class="cs-index__num">01</span>Overview</a></li>
             <li><a href="#context" class="cs-index__item" data-spy="context"><span class="cs-index__num">02</span>Context</a></li>
-            <li><a href="#process" class="cs-index__item" data-spy="process"><span class="cs-index__num">03</span>Process</a></li>
-            <li><a href="#solution" class="cs-index__item" data-spy="solution"><span class="cs-index__num">04</span>Solution</a></li>
+            <li><a href="#projects" class="cs-index__item" data-spy="projects"><span class="cs-index__num">03</span>Projects</a></li>
+            <li><a href="#other" class="cs-index__item" data-spy="other"><span class="cs-index__num">04</span>Other projects</a></li>
             <li><a href="#outcomes" class="cs-index__item" data-spy="outcomes"><span class="cs-index__num">05</span>Outcomes</a></li>
-            <li><a href="#gallery" class="cs-index__item" data-spy="gallery"><span class="cs-index__num">06</span>Gallery</a></li>
-        </ul>
       </aside>
 
       <div class="cs-content">
@@ -1931,132 +1999,153 @@ body, .lp-nav, .lp-chip, .lp-project__media,
           <div class="cs-hero__breadcrumb lp-reveal">
             <a href="../index.html">Work</a>
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
-            <span>Tickmill · Trading Platform</span>
+            <span>Tickmill · Consultant Product Designer</span>
           </div>
 
-          <h1 class="cs-hero__title lp-reveal" data-delay="1">Bringing transparency to premium<em> trading products.</em></h1>
-          <p class="cs-hero__sub lp-reveal" data-delay="2">Redesigned a complex multi-asset trading platform around a clarity-first information architecture — replacing a wall of blinking numbers with a calm, confident interface that retail traders could actually read under pressure.</p>
+          <h1 class="cs-hero__title lp-reveal" data-delay="1">Designing clarity into<em> complex financial flows.</em></h1>
+          <p class="cs-hero__sub lp-reveal" data-delay="2">As a consultant product designer at Tickmill, I shaped the UX and UI across onboarding, wallets, transaction history and compliance documentation — working closely with iOS, Android and web teams across 18 months.</p>
 
           <div class="cs-hero__meta lp-reveal" data-delay="3">
-            <div><span class="cs-hero__meta-k">Project</span><span class="cs-hero__meta-v">Tickmill</span></div>
+            <div><span class="cs-hero__meta-k">Client</span><span class="cs-hero__meta-v">Tickmill</span></div>
             <div><span class="cs-hero__meta-k">Year</span><span class="cs-hero__meta-v">2022 — 2023</span></div>
-            <div><span class="cs-hero__meta-k">Role</span><span class="cs-hero__meta-v">Senior Product Designer</span></div>
-            <div><span class="cs-hero__meta-k">Duration</span><span class="cs-hero__meta-v">9 months</span></div>
+            <div><span class="cs-hero__meta-k">Role</span><span class="cs-hero__meta-v">Consultant Product Designer</span></div>
+            <div><span class="cs-hero__meta-k">Duration</span><span class="cs-hero__meta-v">18 months</span></div>
           </div>
 
           <div class="cs-hero__cover lp-reveal" data-delay="3">
-            <img src="../assets/project-justride-1.png" alt="Tickmill product overview">
+            <img src="../assets/project-tickmill-hero.png" alt="Tickmill product overview">
           </div>
         </section>
 
         <section class="cs-section" id="context">
           <span class="cs-section__kicker">02 · Context</span>
-          <h2 class="cs-section__h lp-reveal">A powerful platform that overwhelmed the people using it.</h2>
-          <p class="cs-section__lede lp-reveal">Tickmill gives retail traders access to forex, indices and futures with institutional-grade execution. But the interface had grown by accretion — every new instrument and order type bolted onto the same dense screen, until new traders bounced and experienced ones built their own workarounds.</p>
+          <h2 class="cs-section__h lp-reveal">A regulated trading platform growing faster than its UX.</h2>
+          <p class="cs-section__lede lp-reveal">Tickmill is an award-winning, multi-regulated Forex and CFD broker operating across multiple jurisdictions. As the product expanded into new markets, the complexity of the user experience grew with it — compliance requirements, financial documentation, multi-currency wallets and account management all demanded clear, trustworthy design at every step.</p>
 
           <div class="cs-prose lp-reveal">
             <div>
-              <p>I led the redesign of the core trading surface across web and mobile. The remit was deliberately narrow at first: make the act of placing, monitoring and closing a trade feel calm and legible — without dumbing down the tooling that power users depend on.</p>
-              <p>The tension ran through every decision. Transparency means showing spreads, swaps, margin and risk honestly — but density is what makes a screen unreadable. The work was about hierarchy, not subtraction: deciding what earns the eye first, and what waits one tap away.</p>
+              <p>I joined as a consultant to support the creation of new product streams, working closely with iOS, Android, QA and web teams to bring coherence to an increasingly complex surface area.</p>
+              <p>The challenge wasn't just visual — it was structural. Regulated flows like onboarding and appropriateness testing had to satisfy compliance requirements while remaining legible to a broad range of traders. Dense data like transaction history and tax documentation needed hierarchy and clarity without hiding the information users depended on.</p>
             </div>
             <div class="cs-stats">
-              <div class="cs-stat"><span class="cs-stat__v">4</span><span class="cs-stat__k">Asset classes unified under one order ticket</span></div>
-              <div class="cs-stat"><span class="cs-stat__v">60+</span><span class="cs-stat__k">Distinct data points triaged into a clear hierarchy</span></div>
-              <div class="cs-stat"><span class="cs-stat__v">2</span><span class="cs-stat__k">Surfaces redesigned in lockstep: web + mobile</span></div>
-              <div class="cs-stat"><span class="cs-stat__v">0</span><span class="cs-stat__k">Trading features removed — only reorganised</span></div>
+              <div class="cs-stat"><span class="cs-stat__v">5</span><span class="cs-stat__k">Distinct product streams designed end-to-end</span></div>
+              <div class="cs-stat"><span class="cs-stat__v">3</span><span class="cs-stat__k">Platforms: iOS, Android and web</span></div>
+              <div class="cs-stat"><span class="cs-stat__v">18</span><span class="cs-stat__k">Months embedded with cross-functional teams</span></div>
+              <div class="cs-stat"><span class="cs-stat__v">Multi</span><span class="cs-stat__k">Regulated across multiple jurisdictions</span></div>
             </div>
           </div>
         </section>
 
-        <section class="cs-section" id="process">
-          <span class="cs-section__kicker">03 · Process</span>
-          <h2 class="cs-section__h lp-reveal">From trader interviews to a tested, calmer terminal.</h2>
-          <p class="cs-section__lede lp-reveal">Four phases, run with a live brokerage that could not afford downtime. Every change was validated against real trading behaviour before it shipped.</p>
+        <section class="cs-section" id="projects">
+          <span class="cs-section__kicker">03 · Projects</span>
+          <h2 class="cs-section__h lp-reveal">Onboarding — designing for 4 verification corridors.</h2>
+          <p class="cs-section__lede lp-reveal">The most complex stream of the project. Getting new traders verified and funded wasn't a single linear flow — the path branched across 4 distinct corridors depending on citizenship and document type, each with its own logic, edge cases and screens to design.</p>
 
           <div class="cs-phases">
 
           <div class="cs-phase lp-reveal">
-            <span class="cs-phase__n">Phase 01</span>
-            <h3 class="cs-phase__h">Trader research</h3>
-            <p class="cs-phase__p">Interviewed 22 traders from first-deposit beginners to high-volume scalpers. Ran diary studies during live market hours to see where the interface actually failed them.</p>
+            <span class="cs-phase__n">Step 01</span>
+            <h3 class="cs-phase__h">Research</h3>
+            <p class="cs-phase__p">Mapped the ID document requirements and citizenship combinations across the markets Tickmill operated in — identifying which documents were accepted, which were mandatory, and where the verification paths diverged.</p>
             <ul class="cs-phase__list">
-              <li>Interviews</li>
-              <li>Diary study</li>
-              <li>Analytics</li>
+              <li>Document research</li>
+              <li>Market mapping</li>
+              <li>Compliance review</li>
             </ul>
           </div>
 
           <div class="cs-phase lp-reveal">
-            <span class="cs-phase__n">Phase 02</span>
-            <h3 class="cs-phase__h">Hierarchy & IA</h3>
-            <p class="cs-phase__p">Rebuilt the screen around a single question — “what does a trader need to decide right now?” Demoted reference data, promoted position state and risk.</p>
+            <span class="cs-phase__n">Step 02</span>
+            <h3 class="cs-phase__h">Corridor mapping</h3>
+            <p class="cs-phase__p">Working closely with the product owner, the research was synthesised into 4 defined verification corridors — each grouping a specific combination of citizenship and document type into a distinct, designable path.</p>
             <ul class="cs-phase__list">
-              <li>IA</li>
-              <li>Hierarchy</li>
-              <li>Wireframes</li>
+              <li>4 corridors defined</li>
+              <li>Product owner alignment</li>
+              <li>Scenario mapping</li>
             </ul>
           </div>
 
           <div class="cs-phase lp-reveal">
-            <span class="cs-phase__n">Phase 03</span>
-            <h3 class="cs-phase__h">Prototype & pressure-test</h3>
-            <p class="cs-phase__p">Built a clickable terminal and tested it in simulated volatile sessions. Measured time-to-place and error rates against the legacy screen across three rounds.</p>
+            <span class="cs-phase__n">Step 03</span>
+            <h3 class="cs-phase__h">Flow design</h3>
+            <p class="cs-phase__p">Each corridor was designed as its own end-to-end flow — with its specific screens, document upload logic and edge cases handled purposefully. Rather than one generic flow patched with exceptions, each path felt intentional and complete.</p>
             <ul class="cs-phase__list">
-              <li>Prototype</li>
-              <li>Usability</li>
-              <li>3 rounds</li>
+              <li>End-to-end flows</li>
+              <li>Edge case design</li>
+              <li>Document logic</li>
             </ul>
           </div>
 
           <div class="cs-phase lp-reveal">
-            <span class="cs-phase__n">Phase 04</span>
-            <h3 class="cs-phase__h">Design system & handoff</h3>
-            <p class="cs-phase__p">Codified a dark-first component library tuned for dense financial data — number formatting, state colours, and motion that signals without distracting.</p>
+            <span class="cs-phase__n">Step 04</span>
+            <h3 class="cs-phase__h">Mobile UI</h3>
+            <p class="cs-phase__p">The flows were designed for the mobile application first — clear step sequences, plain language and visible progress indicators turning a compliance-heavy journey into a confident first impression for new traders.</p>
             <ul class="cs-phase__list">
-              <li>Design system</li>
-              <li>Tokens</li>
-              <li>Handoff</li>
+              <li>iOS &amp; Android</li>
+              <li>Progress design</li>
+              <li>KYC screens</li>
             </ul>
           </div>
+
           </div>
+
+          <div class="cs-mobile-shots lp-reveal">
+            <div class="cs-mobile-shots__grid">
+              <figure class="cs-mobile-shot"><img src="../assets/project-tickmill-ob-1.png" alt="NCI process — document type selection"></figure>
+              <figure class="cs-mobile-shot"><img src="../assets/project-tickmill-ob-2.png" alt="ID Documents intro screen"></figure>
+              <figure class="cs-mobile-shot"><img src="../assets/project-tickmill-ob-3.png" alt="Document verification — proof of ID and address upload"></figure>
+              <figure class="cs-mobile-shot"><img src="../assets/project-tickmill-ob-4.png" alt="National Identity Card capture screen"></figure>
+            </div>
+          </div>
+
         </section>
 
-        <section class="cs-section" id="solution">
-          <span class="cs-section__kicker">04 · Solution</span>
-          <h2 class="cs-section__h lp-reveal">One order ticket, a calmer dashboard, a mobile that keeps up.</h2>
-          <p class="cs-section__lede lp-reveal">The redesign met the trader at three moments: scanning the market, committing to a position, and managing risk on the move. Each got a focused surface.</p>
+        <section class="cs-section" id="other">
+          <span class="cs-section__kicker">04 · Other projects</span>
+          <h2 class="cs-section__h lp-reveal">Four more streams, each with its own challenge.</h2>
 
           <div class="cs-screens">
             <article class="cs-screen lp-reveal">
               <div class="cs-screen__notes">
-                <span class="cs-screen__tag">Trading dashboard</span>
-                <h3 class="cs-screen__h">A workspace that answers “where do I stand?” at a glance.</h3>
-                <p class="cs-screen__p">Open positions, P&L and exposure now lead the screen, with watchlists and charting arranged around them. Colour is reserved for state — green and red mean money, never decoration.</p>
+                <span class="cs-screen__tag">Appropriateness test</span>
+                <h3 class="cs-screen__h">A regulatory gate that feels like a guided conversation.</h3>
+                <p class="cs-screen__p">The appropriateness assessment — required by financial regulators to verify trader knowledge — was redesigned with clear question framing, plain language and no dead ends. Traders understood where they were, what was being asked, and why.</p>
               </div>
               <div class="cs-screen__shot">
-                <img src="../assets/project-justride-1.png" alt="Tickmill trading dashboard">
+                <img src="../assets/project-tickmill-apt.png" alt="Tickmill appropriateness test">
               </div>
             </article>
 
             <article class="cs-screen cs-screen--flip lp-reveal">
               <div class="cs-screen__shot">
-                <img src="../assets/project-justride-2.png" alt="Tickmill order ticket">
+                <img src="../assets/project-tickmill-wal-light.png" alt="Tickmill wallet view" class="theme-switchable" data-light="../assets/project-tickmill-wal-light.png" data-dark="../assets/project-tickmill-wal-dark.png">
               </div>
               <div class="cs-screen__notes">
-                <span class="cs-screen__tag">Order ticket</span>
-                <h3 class="cs-screen__h">One ticket that handles every asset class honestly.</h3>
-                <p class="cs-screen__p">Spread, swap and margin are shown before the trader commits, not buried in a tooltip. The same ticket flexes from a simple market order to a fully conditional bracket without changing its shape.</p>
+                <span class="cs-screen__tag">Wallets</span>
+                <h3 class="cs-screen__h">A unified view of funds that builds confidence.</h3>
+                <p class="cs-screen__p">Multi-currency wallet management across deposits, withdrawals and conversions — with edge cases like pending states, failed transactions and funding limits given a clear, designed home rather than left as unhandled surprises.</p>
               </div>
             </article>
 
             <article class="cs-screen lp-reveal">
               <div class="cs-screen__notes">
-                <span class="cs-screen__tag">Mobile terminal</span>
-                <h3 class="cs-screen__h">Full-fat trading that fits in one hand.</h3>
-                <p class="cs-screen__p">The mobile build keeps position management and risk controls a thumb-reach away. Critical actions — close, modify, hedge — never hide behind a menu when the market is moving.</p>
+                <span class="cs-screen__tag">Transaction history</span>
+                <h3 class="cs-screen__h">Dense financial data made scannable for every user type.</h3>
+                <p class="cs-screen__p">A filterable, sortable record of all financial activity — built to serve a quick balance check and a detailed audit equally well. Smart defaults and strong information hierarchy reduced cognitive load across casual and professional traders alike.</p>
               </div>
               <div class="cs-screen__shot">
-                <img src="../assets/project-justride-1.png" alt="Tickmill mobile terminal" style="object-position: center top;">
+                <img src="../assets/project-tickmill-trx-light.png" alt="Tickmill transaction history" class="theme-switchable" data-light="../assets/project-tickmill-trx-light.png" data-dark="../assets/project-tickmill-trx-dark.png">
+              </div>
+            </article>
+
+            <article class="cs-screen cs-screen--flip lp-reveal">
+              <div class="cs-screen__shot">
+                <img src="../assets/project-tickmill-tax-light.png" alt="Tickmill documentation hub" class="theme-switchable" data-light="../assets/project-tickmill-tax-light.png" data-dark="../assets/project-tickmill-tax-dark.png">
+              </div>
+              <div class="cs-screen__notes">
+                <span class="cs-screen__tag">Taxation &amp; documentation</span>
+                <h3 class="cs-screen__h">Financial documents within reach, with enough context to act.</h3>
+                <p class="cs-screen__p">A document hub that puts statements, tax reports and compliance files within reach — with contextual guidance for users unfamiliar with financial paperwork, reducing the need to contact support.</p>
               </div>
             </article>
           </div>
@@ -2064,38 +2153,27 @@ body, .lp-nav, .lp-chip, .lp-project__media,
 
         <section class="cs-section" id="outcomes">
           <span class="cs-section__kicker">05 · Outcomes</span>
-          <h2 class="cs-section__h lp-reveal">Faster to act, easier to trust, lighter on support.</h2>
-          <p class="cs-section__lede lp-reveal">The new terminal rolled out to retail clients in two regions first. The signal was strong enough that the global rollout was pulled forward a quarter.</p>
+          <h2 class="cs-section__h lp-reveal">Turning regulatory complexity into a product strength.</h2>
+          <p class="cs-section__lede lp-reveal">Across 18 months and five product streams, the work shifted the product from one that required patience to one that rewarded it.</p>
 
-          <div class="cs-outcomes lp-reveal">
-            <div class="cs-outcome"><span class="cs-outcome__v"><em>−38%</em></span><span class="cs-outcome__k">Time to place a first trade for newly funded accounts</span></div>
-            <div class="cs-outcome"><span class="cs-outcome__v"><em>+24%</em></span><span class="cs-outcome__k">Thirty-day retention among first-time traders</span></div>
-            <div class="cs-outcome"><span class="cs-outcome__v"><em>−29%</em></span><span class="cs-outcome__k">Support tickets tagged “where do I see…?”</span></div>
-          </div>
-
-          <figure class="cs-quote lp-reveal">
-            <span class="cs-quote__mark" aria-hidden="true">"</span>
-            <blockquote class="cs-quote__body">Lander made a genuinely complex product feel calm without hiding the things that matter. Our traders trust the screen more — and that trust is the whole business.</blockquote>
-            <figcaption class="cs-quote__by">
-              <span class="cs-quote__avatar">DK</span>
-              <div>
-                <div class="cs-quote__name">Dario Koval</div>
-                <div class="cs-quote__role">Head of Product, Tickmill</div>
-              </div>
-            </figcaption>
-          </figure>
+          <ul class="cs-outcome-list lp-reveal">
+            <li>Compliance became a feature, not a friction point — onboarding and the appropriateness test were reframed as trust-building moments.</li>
+            <li>Complex data found a clear visual language — wallets, transaction history and tax docs went from hard-to-parse to organised and scannable.</li>
+            <li>Cross-platform consistency reduced handoff friction — platform-specific designs gave iOS, Android and web engineers cleaner specs to work from.</li>
+            <li>Documentation flows reduced support reliance — surfacing the right documents with enough context let users self-serve statements and tax reports.</li>
+          </ul>
         </section>
 
-        <section class="cs-section" id="gallery">
+        <section class="cs-section" id="gallery" style="display:none">
           <span class="cs-section__kicker">06 · Gallery</span>
-          <h2 class="cs-section__h lp-reveal">A look at the shipped terminal.</h2>
+          <h2 class="cs-section__h lp-reveal">A walk through the shipped work.</h2>
 
           <div class="cs-gallery">
-            <figure class="cs-gallery__item cs-gallery__a lp-reveal"><img src="../assets/project-justride-1.png" alt="Dashboard overview"></figure>
-            <figure class="cs-gallery__item cs-gallery__b lp-reveal" data-delay="1"><img src="../assets/project-justride-2.png" alt="Order ticket detail"></figure>
-            <figure class="cs-gallery__item cs-gallery__c lp-reveal" data-delay="1"><img src="../assets/project-justride-2.png" alt="Risk panel"></figure>
-            <figure class="cs-gallery__item cs-gallery__d lp-reveal" data-delay="2"><img src="../assets/project-justride-1.png" alt="Mobile terminal"></figure>
-            <figure class="cs-gallery__item cs-gallery__e lp-reveal" data-delay="2"><img src="../assets/project-justride-1.png" alt="Watchlist state" style="object-position: left center;"></figure>
+            <figure class="cs-gallery__item cs-gallery__a lp-reveal"><img src="../assets/project-tickmill-ob-1.png" alt="Onboarding corridor flow"></figure>
+            <figure class="cs-gallery__item cs-gallery__b lp-reveal" data-delay="1"><img src="../assets/project-tickmill-ob-2.png" alt="ID verification screen"></figure>
+            <figure class="cs-gallery__item cs-gallery__c lp-reveal" data-delay="1"><img src="../assets/project-tickmill-apt.png" alt="Appropriateness test"></figure>
+            <figure class="cs-gallery__item cs-gallery__d lp-reveal" data-delay="2"><img src="../assets/project-tickmill-wal.png" alt="Wallet view"></figure>
+            <figure class="cs-gallery__item cs-gallery__e lp-reveal" data-delay="2"><img src="../assets/project-tickmill-trx.png" alt="Transaction history"></figure>
           </div>
 
           <a class="cs-next lp-reveal" href="./hubpay.html">
@@ -2159,6 +2237,10 @@ body, .lp-nav, .lp-chip, .lp-project__media,
       var next = isDark ? 'light' : 'dark';
       toggle.setAttribute('aria-label', 'Switch to ' + next + ' theme');
       toggle.setAttribute('title', 'Switch to ' + next + ' theme');
+      // Swap theme-sensitive images
+      document.querySelectorAll('.theme-switchable').forEach(function(img) {
+        img.src = isDark ? img.getAttribute('data-dark') : img.getAttribute('data-light');
+      });
     }
     syncToggle();
     toggle.addEventListener('click', function () {
