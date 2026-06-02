@@ -1681,7 +1681,7 @@ body, .lp-nav, .lp-chip, .lp-project__media,
 .cs-screen__shot {
   border-radius: 22px; overflow: hidden;
   background: var(--surface-alt);
-  aspect-ratio: 4/3; position: relative;
+  aspect-ratio: 16/9; position: relative;
 }
 .cs-screen__shot img {
   width: 100%; height: 100%; object-fit: cover; display: block;
@@ -1856,22 +1856,24 @@ body, .lp-nav, .lp-chip, .lp-project__media,
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
+  align-items: start;
 }
 .cs-mobile-shot {
   margin: 0;
   border-radius: var(--radius-md);
   overflow: hidden;
   background: var(--surface-alt);
-  aspect-ratio: 9/16;
+  aspect-ratio: 9/19.5;
+  box-shadow: var(--shadow-card);
 }
 .cs-mobile-shot img {
-  width: 100%; height: 100%; object-fit: cover; display: block;
+  width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block;
 }
 @media (max-width: 800px) {
-  .cs-mobile-shots__grid { grid-template-columns: repeat(2, 1fr); }
+  .cs-mobile-shots__grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
 }
 @media (max-width: 480px) {
-  .cs-mobile-shots__grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .cs-mobile-shots__grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
 }
 
 .cs-outcome-list {
