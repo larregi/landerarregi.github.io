@@ -1302,6 +1302,37 @@ body, .lp-nav, .lp-chip, .lp-project__media,
 }
 
 /* ============================================================
+   Coming soon overlay — blurred project cards
+   ============================================================ */
+.lp-project--coming-soon {
+  position: relative;
+  pointer-events: none;
+}
+.lp-project--coming-soon .lp-project__media,
+.lp-project--coming-soon .lp-project__meta {
+  filter: blur(4px);
+  opacity: 0.5;
+  user-select: none;
+}
+.lp-project--coming-soon::after {
+  content: "Under maintenance";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+  background: color-mix(in srgb, var(--bg) 30%, transparent);
+  border-radius: var(--radius-card);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ============================================================
    Reveal on scroll
    ============================================================ */
 .lp-reveal {
@@ -1396,7 +1427,7 @@ body, .lp-nav, .lp-chip, .lp-project__media,
         </div>
         <div class="lp-projects">
 
-          <article class="lp-project lp-reveal">
+          <article class="lp-project lp-project--coming-soon lp-reveal">
             <div class="lp-project__meta">
               <div class="lp-project__kicker">01 · Masabi</div>
               <h3 class="lp-project__headline">Seamless fare payments across every mode of transport.</h3>
@@ -1407,7 +1438,7 @@ body, .lp-nav, .lp-chip, .lp-project__media,
               </a>
             </div>
             <a class="lp-project__media" href="work/justride.html" aria-label="Open Masabi">
-              <img src="assets/project-justride-2.png" alt="Masabi preview" loading="lazy">
+              <img src="assets/project-justride-1.png" alt="Masabi preview" loading="lazy">
             </a>
           </article>
 
@@ -1426,7 +1457,7 @@ body, .lp-nav, .lp-chip, .lp-project__media,
             </a>
           </article>
 
-          <article class="lp-project lp-reveal">
+          <article class="lp-project lp-project--coming-soon lp-reveal">
             <div class="lp-project__meta">
               <div class="lp-project__kicker">03 · Hubpay</div>
               <h3 class="lp-project__headline">Sending money abroad — without the friction or the fees.</h3>
@@ -1441,7 +1472,7 @@ body, .lp-nav, .lp-chip, .lp-project__media,
             </a>
           </article>
 
-          <article class="lp-project lp-project--flip lp-reveal">
+          <article class="lp-project lp-project--flip lp-project--coming-soon lp-reveal">
             <div class="lp-project__meta">
               <div class="lp-project__kicker">04 · ACE for Unions</div>
               <h3 class="lp-project__headline">Digitizing trade work for labor unions.</h3>
