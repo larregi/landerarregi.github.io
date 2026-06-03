@@ -1554,7 +1554,7 @@ body, .lp-nav, .lp-chip, .lp-project__media,
   background: rgba(180, 0, 0, 0.30);
 }
 .cs-hero__cover img {
-  width: 100%; height: 100%; object-fit: cover; display: block;
+  width: 100%; height: 100%; object-fit: contain; display: block; padding: 24px;
 }
 .cs-hero__cover::after {
   content: ""; position: absolute; inset: 0; border-radius: inherit;
@@ -1673,8 +1673,9 @@ body, .lp-nav, .lp-chip, .lp-project__media,
 .cs-screen {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
-  gap: 40px;
+  gap: 56px;
   align-items: center;
+  margin-bottom: 64px;
 }
 .cs-screen--flip { grid-template-columns: 1fr 1.2fr; }
 .cs-screen--flip .cs-screen__notes { order: 2; }
@@ -1862,8 +1863,9 @@ body, .lp-nav, .lp-chip, .lp-project__media,
 .cs-mobile-shots__grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: 20px;
   align-items: start;
+  max-width: 100%;
 }
 .cs-mobile-shot {
   margin: 0;
@@ -2181,11 +2183,11 @@ body, .lp-nav, .lp-chip, .lp-project__media,
           <h2 class="cs-section__h lp-reveal">A walk through the shipped work.</h2>
 
           <div class="cs-gallery">
-            <figure class="cs-gallery__item cs-gallery__a lp-reveal"><img src="../assets/project-tickmill-ob-1.png" alt="Onboarding corridor flow"></figure>
-            <figure class="cs-gallery__item cs-gallery__b lp-reveal" data-delay="1"><img src="../assets/project-tickmill-ob-2.png" alt="ID verification screen"></figure>
-            <figure class="cs-gallery__item cs-gallery__c lp-reveal" data-delay="1"><img src="../assets/project-tickmill-apt.png" alt="Appropriateness test"></figure>
-            <figure class="cs-gallery__item cs-gallery__d lp-reveal" data-delay="2"><img src="../assets/project-tickmill-wal.png" alt="Wallet view"></figure>
-            <figure class="cs-gallery__item cs-gallery__e lp-reveal" data-delay="2"><img src="../assets/project-tickmill-trx.png" alt="Transaction history"></figure>
+            <figure class="cs-gallery__item cs-gallery__a lp-reveal"><img src="../assets/project-tickmill-ob-1-light.png" alt="Onboarding corridor flow" class="theme-switchable" data-light="../assets/project-tickmill-ob-1-light.png" data-dark="../assets/project-tickmill-ob-1-dark.png"></figure>
+            <figure class="cs-gallery__item cs-gallery__b lp-reveal" data-delay="1"><img src="../assets/project-tickmill-ob-2-light.png" alt="ID verification screen" class="theme-switchable" data-light="../assets/project-tickmill-ob-2-light.png" data-dark="../assets/project-tickmill-ob-2-dark.png"></figure>
+            <figure class="cs-gallery__item cs-gallery__c lp-reveal" data-delay="1"><img src="../assets/project-tickmill-apt-light.png" alt="Appropriateness test" class="theme-switchable" data-light="../assets/project-tickmill-apt-light.png" data-dark="../assets/project-tickmill-apt-dark.png"></figure>
+            <figure class="cs-gallery__item cs-gallery__d lp-reveal" data-delay="2"><img src="../assets/project-tickmill-wal-light.png" alt="Wallet view" class="theme-switchable" data-light="../assets/project-tickmill-wal-light.png" data-dark="../assets/project-tickmill-wal-dark.png"></figure>
+            <figure class="cs-gallery__item cs-gallery__e lp-reveal" data-delay="2"><img src="../assets/project-tickmill-trx-light.png" alt="Transaction history" class="theme-switchable" data-light="../assets/project-tickmill-trx-light.png" data-dark="../assets/project-tickmill-trx-dark.png"></figure>
           </div>
 
           <a class="cs-next lp-reveal" href="./hubpay.html">
