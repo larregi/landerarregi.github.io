@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tickmill — Case Study · Lander Arregi</title>
-  <meta name="description" content="Designing clarity into complex financial flows — onboarding, wallets, transaction history and compliance documentation for a multi-regulated trading platform.">
+  <meta name="description" content="Designing clarity into complex financial flows — UX and UI across onboarding, wallets, transaction history and compliance documentation at Tickmill.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1298,10 +1298,6 @@ body, .lp-nav, .lp-chip, .lp-project__media,
   padding: 18px 40px;
   pointer-events: none;
 }
-@media (max-width: 800px) {
-  .cs-nav-wrap { padding: 12px 16px; }
-  .cs-nav { padding: 8px 10px 8px 16px; }
-}
 .cs-nav-wrap > * { pointer-events: auto; }
 .cs-nav {
   max-width: 1240px; margin: 0 auto;
@@ -1359,10 +1355,10 @@ body, .lp-nav, .lp-chip, .lp-project__media,
 }
 .cs-content { min-width: 0; }
 @media (max-width: 1000px) {
-  .cs-shell { grid-template-columns: 1fr; gap: 0; padding-top: 100px; }
+  .cs-shell { grid-template-columns: 1fr; gap: 24px; padding-top: 120px; }
 }
 @media (max-width: 800px) {
-  .cs-shell { padding-left: 22px; padding-right: 22px; padding-top: 90px; }
+  .cs-shell { padding-left: 22px; padding-right: 22px; }
 }
 
 /* ============================================================
@@ -1381,8 +1377,7 @@ body, .lp-nav, .lp-chip, .lp-project__media,
   text-transform: uppercase; color: var(--fg-3);
   margin-bottom: 18px;
 }
-.cs-index__list { list-style: none !important; padding: 0; margin: 0; }
-.cs-index__list li { list-style: none !important; }
+.cs-index__list { list-style: none; padding: 0; margin: 0; }
 .cs-index__item {
   position: relative;
   display: block;
@@ -1416,35 +1411,26 @@ body, .lp-nav, .lp-chip, .lp-project__media,
 
 @media (max-width: 1000px) {
   .cs-index {
-    position: sticky; top: 64px; z-index: 50;
+    position: sticky; top: 78px; z-index: 50;
     flex-direction: row; gap: 4px; overflow-x: auto;
-    padding: 10px 22px;
+    padding: 12px 4px;
     margin: 0 -22px;
-    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    background: color-mix(in srgb, var(--bg) 86%, transparent);
     backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--border);
-    /* hide scrollbar */
-    scrollbar-width: none;
-    -ms-overflow-style: none;
   }
-  .cs-index::-webkit-scrollbar { display: none; }
   .cs-index__kicker { display: none; }
-  .cs-index__list { display: flex; gap: 6px; padding: 0; white-space: nowrap; }
+  .cs-index__list { display: flex; gap: 4px; padding: 0 22px; }
   .cs-index__item {
     white-space: nowrap;
-    padding: 7px 14px; border-left: 0;
+    padding: 8px 14px; border-left: 0;
     border-radius: 9999px;
     background: var(--surface-alt);
-    font-size: 12px;
   }
   .cs-index__item.is-active { background: var(--fg); color: var(--bg); }
   .cs-index__item.is-active::before { display: none; }
   .cs-index__item.is-active .cs-index__num { color: rgba(255,255,255,0.5); }
   .cs-index__num { margin-right: 4px; }
-}
-@media (max-width: 800px) {
-  .cs-index { top: 58px; }
 }
 
 /* ============================================================
@@ -1453,9 +1439,6 @@ body, .lp-nav, .lp-chip, .lp-project__media,
 .cs-section {
   padding: clamp(40px, 6vw, 80px) 0;
   scroll-margin-top: 110px;
-}
-@media (max-width: 1000px) {
-  .cs-section { scroll-margin-top: 120px; }
 }
 .cs-section + .cs-section { border-top: 1px solid var(--border); }
 .cs-section__kicker {
@@ -1546,15 +1529,12 @@ body, .lp-nav, .lp-chip, .lp-project__media,
   margin-top: 32px;
   border-radius: 24px;
   overflow: hidden;
-  background: rgba(204, 0, 0, 0.40);
+  background: var(--surface-alt);
   aspect-ratio: 16/10;
   position: relative;
 }
-:root[data-theme="dark"] .cs-hero__cover {
-  background: rgba(180, 0, 0, 0.30);
-}
 .cs-hero__cover img {
-  width: 100%; height: 100%; object-fit: contain; display: block; padding: 24px;
+  width: 100%; height: 100%; object-fit: cover; display: block;
 }
 .cs-hero__cover::after {
   content: ""; position: absolute; inset: 0; border-radius: inherit;
@@ -1672,24 +1652,17 @@ body, .lp-nav, .lp-chip, .lp-project__media,
 }
 .cs-screen {
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 56px;
+  grid-template-columns: 1fr 1.5fr;
+  gap: clamp(32px, 4vw, 56px);
   align-items: center;
-  margin-bottom: 64px;
 }
-.cs-screen--flip { grid-template-columns: 1fr 1.2fr; }
+.cs-screen--flip { grid-template-columns: 1.5fr 1fr; }
 .cs-screen--flip .cs-screen__notes { order: 2; }
 .cs-screen--flip .cs-screen__shot  { order: 1; }
 .cs-screen__shot {
   border-radius: 22px; overflow: hidden;
-  background: rgba(204, 0, 0, 0.40);
-  position: relative;
-}
-:root[data-theme="dark"] .cs-screen__shot {
-  background: rgba(180, 0, 0, 0.30);
-}
-.cs-screen__shot img {
-  width: 100%; height: auto; display: block;
+  background: var(--surface-alt);
+  aspect-ratio: 3/2; position: relative;
 }
 .cs-screen__shot img {
   width: 100%; height: 100%; object-fit: cover; display: block;
@@ -1853,64 +1826,6 @@ body, .lp-nav, .lp-chip, .lp-project__media,
 /* ============================================================
    Next project link
    ============================================================ */
-
-/* ============================================================
-   Mobile shots grid — 4-up for onboarding screenshots
-   ============================================================ */
-.cs-mobile-shots {
-  margin-top: 48px;
-}
-.cs-mobile-shots__grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  align-items: start;
-  max-width: 100%;
-}
-.cs-mobile-shot {
-  margin: 0;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  background: rgba(204, 0, 0, 0.40);
-  box-shadow: var(--shadow-card);
-  position: relative;
-}
-:root[data-theme="dark"] .cs-mobile-shot {
-  background: rgba(180, 0, 0, 0.30);
-}
-.cs-mobile-shot img {
-  width: 100%; height: auto; display: block;
-}
-@media (max-width: 800px) {
-  .cs-mobile-shots__grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-}
-@media (max-width: 480px) {
-  .cs-mobile-shots__grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-}
-
-.cs-outcome-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-.cs-outcome-list li {
-  padding-left: 20px;
-  position: relative;
-  font-size: var(--fs-body);
-  line-height: var(--lh-body);
-  color: var(--fg-1);
-}
-.cs-outcome-list li::before {
-  content: "—";
-  position: absolute;
-  left: 0;
-  color: var(--mint);
-  font-weight: var(--fw-medium);
-}
-
 .cs-next {
   margin-top: clamp(80px, 10vw, 140px);
   padding: clamp(40px, 6vw, 80px) clamp(28px, 4vw, 56px);
@@ -1978,6 +1893,124 @@ body, .lp-nav, .lp-chip, .lp-project__media,
 }
 :root[data-theme="dark"] .cs-hero::before { opacity: 0.18; }
 
+/* ============================================================
+   Image placeholders — drop real screenshots here
+   ============================================================ */
+.cs-ph {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px;
+  background:
+    repeating-linear-gradient(135deg,
+      transparent 0, transparent 11px,
+      color-mix(in srgb, var(--border) 55%, transparent) 11px,
+      color-mix(in srgb, var(--border) 55%, transparent) 12px),
+    var(--surface-alt);
+}
+.cs-ph span {
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.06em; line-height: 1.45;
+  text-transform: uppercase; text-align: center;
+  color: var(--fg-2);
+  padding: 8px 14px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
+  max-width: 86%;
+}
+/* ============================================================
+   Themed screenshots — light/dark variants swap with the theme
+   ============================================================ */
+.cs-shot {
+  position: absolute; inset: 0; z-index: 1;
+  box-sizing: border-box;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center top;
+  display: block;
+}
+.cs-shot--dark { display: none; }
+.cs-shot.cs-shot--dark { display: none; }
+:root[data-theme="dark"] .cs-shot.cs-shot--light { display: none; }
+:root[data-theme="dark"] .cs-shot.cs-shot--dark  { display: block; }
+
+/* Transparent device composites float on a dynamic red backdrop.
+   Light: #CC0000 @ 40% · Dark: #B40000 @ 30%. */
+.cs-redbg { background: rgba(204, 0, 0, 0.40); }
+:root[data-theme="dark"] .cs-redbg { background: rgba(180, 0, 0, 0.30); }
+.cs-redbg .cs-shot {
+  object-fit: contain;
+  object-position: center;
+  padding: clamp(12px, 1.8vw, 26px);
+}
+
+/* ============================================================
+   Onboarding screens — 4-up labelled flow, fully displayed
+   ============================================================ */
+.cs-thumbs {
+  margin-top: clamp(28px, 4vw, 44px);
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: clamp(18px, 2.4vw, 32px);
+}
+.cs-thumb-card {
+  margin: 0;
+  display: flex; flex-direction: column;
+  gap: 16px;
+}
+.cs-thumb-cap {
+  display: flex; align-items: baseline; gap: 10px;
+  padding-left: 2px;
+}
+.cs-thumb-step {
+  font-family: var(--font-mono);
+  font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+  color: var(--mint-ink); flex: none;
+}
+:root[data-theme="dark"] .cs-thumb-step { color: var(--mint); }
+.cs-thumb-title {
+  font-size: clamp(15px, 1.3vw, 17px); font-weight: 600;
+  letter-spacing: -0.01em; line-height: 1.25;
+  color: var(--fg); text-wrap: balance;
+}
+.cs-thumb {
+  position: relative; margin: 0;
+  aspect-ratio: 720 / 1688;
+  border-radius: 18px; overflow: hidden;
+  background: var(--surface-alt);
+}
+.cs-thumb::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--border) 60%, transparent) inset;
+  pointer-events: none;
+}
+@media (max-width: 800px) { .cs-thumbs { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 460px) { .cs-thumbs { grid-template-columns: 1fr; } }
+
+/* ============================================================
+   Outcomes — takeaway list with mint dash markers
+   ============================================================ */
+.cs-takeaways {
+  list-style: none; padding: 0; margin: clamp(8px, 2vw, 20px) 0 0;
+  display: flex; flex-direction: column;
+}
+.cs-takeaway {
+  display: grid; grid-template-columns: 26px 1fr; gap: 12px;
+  align-items: start;
+  padding: 24px 0;
+  border-top: 1px solid var(--border);
+  font-size: clamp(16px, 1.4vw, 19px);
+  line-height: 1.55;
+  color: var(--fg-1);
+}
+.cs-takeaway:last-child { border-bottom: 1px solid var(--border); }
+.cs-takeaway__dash {
+  width: 18px; height: 2px; border-radius: 2px;
+  background: var(--mint); margin-top: 0.65em;
+}
+.cs-takeaway b { color: var(--fg); font-weight: 600; }
+@media (max-width: 560px) {
+  .cs-takeaway { grid-template-columns: 20px 1fr; gap: 10px; }
+}
+
   </style>
 </head>
 <body>
@@ -2001,11 +2034,13 @@ body, .lp-nav, .lp-chip, .lp-project__media,
     <div class="cs-shell">
       <aside class="cs-index" aria-label="On this page">
         <div class="cs-index__kicker">On this page</div>
+        <ul class="cs-index__list">
             <li><a href="#overview" class="cs-index__item is-active" data-spy="overview"><span class="cs-index__num">01</span>Overview</a></li>
             <li><a href="#context" class="cs-index__item" data-spy="context"><span class="cs-index__num">02</span>Context</a></li>
             <li><a href="#projects" class="cs-index__item" data-spy="projects"><span class="cs-index__num">03</span>Projects</a></li>
-            <li><a href="#other" class="cs-index__item" data-spy="other"><span class="cs-index__num">04</span>Other projects</a></li>
+            <li><a href="#other-projects" class="cs-index__item" data-spy="other-projects"><span class="cs-index__num">04</span>Other projects</a></li>
             <li><a href="#outcomes" class="cs-index__item" data-spy="outcomes"><span class="cs-index__num">05</span>Outcomes</a></li>
+        </ul>
       </aside>
 
       <div class="cs-content">
@@ -2016,7 +2051,7 @@ body, .lp-nav, .lp-chip, .lp-project__media,
             <span>Tickmill · Consultant Product Designer</span>
           </div>
 
-          <h1 class="cs-hero__title lp-reveal" data-delay="1">Designing clarity into<em> complex financial flows.</em></h1>
+          <h1 class="cs-hero__title lp-reveal" data-delay="1">Designing clarity into <em>complex financial flows.</em></h1>
           <p class="cs-hero__sub lp-reveal" data-delay="2">As a consultant product designer at Tickmill, I shaped the UX and UI across onboarding, wallets, transaction history and compliance documentation — working closely with iOS, Android and web teams across 18 months.</p>
 
           <div class="cs-hero__meta lp-reveal" data-delay="3">
@@ -2026,8 +2061,8 @@ body, .lp-nav, .lp-chip, .lp-project__media,
             <div><span class="cs-hero__meta-k">Duration</span><span class="cs-hero__meta-v">18 months</span></div>
           </div>
 
-          <div class="cs-hero__cover lp-reveal" data-delay="3">
-            <img src="../assets/project-tickmill-hero.png" alt="Tickmill product overview">
+          <div class="cs-hero__cover cs-redbg lp-reveal" data-delay="3">
+            <img class="cs-shot" src="../assets/project-tickmill-hero.png" alt="Tickmill wallets dashboard across web and mobile">
           </div>
         </section>
 
@@ -2038,7 +2073,7 @@ body, .lp-nav, .lp-chip, .lp-project__media,
 
           <div class="cs-prose lp-reveal">
             <div>
-              <p>I joined as a consultant to support the creation of new product streams, working closely with iOS, Android, QA and web teams to bring coherence to an increasingly complex surface area.</p>
+              <p>Brought on as an external consultant, I embedded directly with the product, iOS, Android, QA and web teams to bring coherence to an increasingly complex surface area.</p>
               <p>The challenge wasn't just visual — it was structural. Regulated flows like onboarding and appropriateness testing had to satisfy compliance requirements while remaining legible to a broad range of traders. Dense data like transaction history and tax documentation needed hierarchy and clarity without hiding the information users depended on.</p>
             </div>
             <div class="cs-stats">
@@ -2100,21 +2135,29 @@ body, .lp-nav, .lp-chip, .lp-project__media,
               <li>KYC screens</li>
             </ul>
           </div>
-
           </div>
 
-          <div class="cs-mobile-shots lp-reveal">
-            <div class="cs-mobile-shots__grid">
-              <figure class="cs-mobile-shot"><img src="../assets/project-tickmill-ob-1-light.png" alt="NCI process — document type selection" class="theme-switchable" data-light="../assets/project-tickmill-ob-1-light.png" data-dark="../assets/project-tickmill-ob-1-dark.png"></figure>
-              <figure class="cs-mobile-shot"><img src="../assets/project-tickmill-ob-2-light.png" alt="ID Documents intro screen" class="theme-switchable" data-light="../assets/project-tickmill-ob-2-light.png" data-dark="../assets/project-tickmill-ob-2-dark.png"></figure>
-              <figure class="cs-mobile-shot"><img src="../assets/project-tickmill-ob-3-light.png" alt="Document verification — proof of ID and address upload" class="theme-switchable" data-light="../assets/project-tickmill-ob-3-light.png" data-dark="../assets/project-tickmill-ob-3-dark.png"></figure>
-              <figure class="cs-mobile-shot"><img src="../assets/project-tickmill-ob-4-light.png" alt="National Identity Card capture screen" class="theme-switchable" data-light="../assets/project-tickmill-ob-4-light.png" data-dark="../assets/project-tickmill-ob-4-dark.png"></figure>
-            </div>
+          <div class="cs-thumbs lp-reveal">
+            <figure class="cs-thumb-card">
+              <figcaption class="cs-thumb-cap"><span class="cs-thumb-step">01</span><span class="cs-thumb-title">ID Documents — get ready</span></figcaption>
+              <div class="cs-thumb"><img class="cs-shot cs-shot--light" src="../assets/project-tickmill-ob-1-light.png" alt="ID Documents — get ready"><img class="cs-shot cs-shot--dark" src="../assets/project-tickmill-ob-1-dark.png" alt="" aria-hidden="true"></div>
+            </figure>
+            <figure class="cs-thumb-card">
+              <figcaption class="cs-thumb-cap"><span class="cs-thumb-step">02</span><span class="cs-thumb-title">NCI process — document type</span></figcaption>
+              <div class="cs-thumb"><img class="cs-shot cs-shot--light" src="../assets/project-tickmill-ob-3-light.png" alt="NCI process — document type selection"><img class="cs-shot cs-shot--dark" src="../assets/project-tickmill-ob-3-dark.png" alt="" aria-hidden="true"></div>
+            </figure>
+            <figure class="cs-thumb-card">
+              <figcaption class="cs-thumb-cap"><span class="cs-thumb-step">03</span><span class="cs-thumb-title">National identity card — capture</span></figcaption>
+              <div class="cs-thumb"><img class="cs-shot cs-shot--light" src="../assets/project-tickmill-ob-4-light.png" alt="National identity card — capture screen"><img class="cs-shot cs-shot--dark" src="../assets/project-tickmill-ob-4-dark.png" alt="" aria-hidden="true"></div>
+            </figure>
+            <figure class="cs-thumb-card">
+              <figcaption class="cs-thumb-cap"><span class="cs-thumb-step">04</span><span class="cs-thumb-title">Document verification — proof of ID &amp; address</span></figcaption>
+              <div class="cs-thumb"><img class="cs-shot cs-shot--light" src="../assets/project-tickmill-ob-2-light.png" alt="Document verification — proof of ID and address"><img class="cs-shot cs-shot--dark" src="../assets/project-tickmill-ob-2-dark.png" alt="" aria-hidden="true"></div>
+            </figure>
           </div>
-
         </section>
 
-        <section class="cs-section" id="other">
+        <section class="cs-section" id="other-projects">
           <span class="cs-section__kicker">04 · Other projects</span>
           <h2 class="cs-section__h lp-reveal">Four more streams, each with its own challenge.</h2>
 
@@ -2125,15 +2168,11 @@ body, .lp-nav, .lp-chip, .lp-project__media,
                 <h3 class="cs-screen__h">A regulatory gate that feels like a guided conversation.</h3>
                 <p class="cs-screen__p">The appropriateness assessment — required by financial regulators to verify trader knowledge — was redesigned with clear question framing, plain language and no dead ends. Traders understood where they were, what was being asked, and why.</p>
               </div>
-              <div class="cs-screen__shot">
-                <img src="../assets/project-tickmill-apt-light.png" alt="Tickmill appropriateness test" class="theme-switchable" data-light="../assets/project-tickmill-apt-light.png" data-dark="../assets/project-tickmill-apt-dark.png">
-              </div>
+              <div class="cs-screen__shot cs-redbg"><img class="cs-shot cs-shot--light" src="../assets/project-tickmill-apt-light.png" alt="Tickmill appropriateness test"><img class="cs-shot cs-shot--dark" src="../assets/project-tickmill-apt-dark.png" alt="" aria-hidden="true"></div>
             </article>
 
             <article class="cs-screen cs-screen--flip lp-reveal">
-              <div class="cs-screen__shot">
-                <img src="../assets/project-tickmill-wal-light.png" alt="Tickmill wallet view" class="theme-switchable" data-light="../assets/project-tickmill-wal-light.png" data-dark="../assets/project-tickmill-wal-dark.png">
-              </div>
+              <div class="cs-screen__shot cs-redbg"><img class="cs-shot cs-shot--light" src="../assets/project-tickmill-wal-light.png" alt="Tickmill wallets — deposit, withdraw and convert"><img class="cs-shot cs-shot--dark" src="../assets/project-tickmill-wal-dark.png" alt="" aria-hidden="true"></div>
               <div class="cs-screen__notes">
                 <span class="cs-screen__tag">Wallets</span>
                 <h3 class="cs-screen__h">A unified view of funds that builds confidence.</h3>
@@ -2147,17 +2186,13 @@ body, .lp-nav, .lp-chip, .lp-project__media,
                 <h3 class="cs-screen__h">Dense financial data made scannable for every user type.</h3>
                 <p class="cs-screen__p">A filterable, sortable record of all financial activity — built to serve a quick balance check and a detailed audit equally well. Smart defaults and strong information hierarchy reduced cognitive load across casual and professional traders alike.</p>
               </div>
-              <div class="cs-screen__shot">
-                <img src="../assets/project-tickmill-trx-light.png" alt="Tickmill transaction history" class="theme-switchable" data-light="../assets/project-tickmill-trx-light.png" data-dark="../assets/project-tickmill-trx-dark.png">
-              </div>
+              <div class="cs-screen__shot cs-redbg"><img class="cs-shot cs-shot--light" src="../assets/project-tickmill-trx-light.png" alt="Tickmill transaction history and filters"><img class="cs-shot cs-shot--dark" src="../assets/project-tickmill-trx-dark.png" alt="" aria-hidden="true"></div>
             </article>
 
             <article class="cs-screen cs-screen--flip lp-reveal">
-              <div class="cs-screen__shot">
-                <img src="../assets/project-tickmill-tax-light.png" alt="Tickmill documentation hub" class="theme-switchable" data-light="../assets/project-tickmill-tax-light.png" data-dark="../assets/project-tickmill-tax-dark.png">
-              </div>
+              <div class="cs-screen__shot cs-redbg"><img class="cs-shot cs-shot--light" src="../assets/project-tickmill-tax-light.png" alt="Tickmill W-8BEN forms and document history"><img class="cs-shot cs-shot--dark" src="../assets/project-tickmill-tax-dark.png" alt="" aria-hidden="true"></div>
               <div class="cs-screen__notes">
-                <span class="cs-screen__tag">Taxation &amp; documentation</span>
+                <span class="cs-screen__tag">Documents</span>
                 <h3 class="cs-screen__h">Financial documents within reach, with enough context to act.</h3>
                 <p class="cs-screen__p">A document hub that puts statements, tax reports and compliance files within reach — with contextual guidance for users unfamiliar with financial paperwork, reducing the need to contact support.</p>
               </div>
@@ -2170,33 +2205,12 @@ body, .lp-nav, .lp-chip, .lp-project__media,
           <h2 class="cs-section__h lp-reveal">Turning regulatory complexity into a product strength.</h2>
           <p class="cs-section__lede lp-reveal">Across 18 months and five product streams, the work shifted the product from one that required patience to one that rewarded it.</p>
 
-          <ul class="cs-outcome-list lp-reveal">
-            <li>Compliance became a feature, not a friction point — onboarding and the appropriateness test were reframed as trust-building moments.</li>
-            <li>Complex data found a clear visual language — wallets, transaction history and tax docs went from hard-to-parse to organised and scannable.</li>
-            <li>Cross-platform consistency reduced handoff friction — platform-specific designs gave iOS, Android and web engineers cleaner specs to work from.</li>
-            <li>Documentation flows reduced support reliance — surfacing the right documents with enough context let users self-serve statements and tax reports.</li>
+          <ul class="cs-takeaways lp-reveal">
+            <li class="cs-takeaway"><span class="cs-takeaway__dash"></span><span><b>Compliance became a feature, not a friction point</b> — onboarding and the appropriateness test were reframed as trust-building moments.</span></li>
+            <li class="cs-takeaway"><span class="cs-takeaway__dash"></span><span><b>Complex data found a clear visual language</b> — wallets, transaction history and tax docs went from hard-to-parse to organised and scannable.</span></li>
+            <li class="cs-takeaway"><span class="cs-takeaway__dash"></span><span><b>Cross-platform consistency reduced handoff friction</b> — platform-specific designs gave iOS, Android and web engineers cleaner specs to work from.</span></li>
+            <li class="cs-takeaway"><span class="cs-takeaway__dash"></span><span><b>Documentation flows reduced support reliance</b> — surfacing the right documents with enough context let users self-serve statements and tax reports.</span></li>
           </ul>
-        </section>
-
-        <section class="cs-section" id="gallery" style="display:none">
-          <span class="cs-section__kicker">06 · Gallery</span>
-          <h2 class="cs-section__h lp-reveal">A walk through the shipped work.</h2>
-
-          <div class="cs-gallery">
-            <figure class="cs-gallery__item cs-gallery__a lp-reveal"><img src="../assets/project-tickmill-ob-1-light.png" alt="Onboarding corridor flow" class="theme-switchable" data-light="../assets/project-tickmill-ob-1-light.png" data-dark="../assets/project-tickmill-ob-1-dark.png"></figure>
-            <figure class="cs-gallery__item cs-gallery__b lp-reveal" data-delay="1"><img src="../assets/project-tickmill-ob-2-light.png" alt="ID verification screen" class="theme-switchable" data-light="../assets/project-tickmill-ob-2-light.png" data-dark="../assets/project-tickmill-ob-2-dark.png"></figure>
-            <figure class="cs-gallery__item cs-gallery__c lp-reveal" data-delay="1"><img src="../assets/project-tickmill-apt-light.png" alt="Appropriateness test" class="theme-switchable" data-light="../assets/project-tickmill-apt-light.png" data-dark="../assets/project-tickmill-apt-dark.png"></figure>
-            <figure class="cs-gallery__item cs-gallery__d lp-reveal" data-delay="2"><img src="../assets/project-tickmill-wal-light.png" alt="Wallet view" class="theme-switchable" data-light="../assets/project-tickmill-wal-light.png" data-dark="../assets/project-tickmill-wal-dark.png"></figure>
-            <figure class="cs-gallery__item cs-gallery__e lp-reveal" data-delay="2"><img src="../assets/project-tickmill-trx-light.png" alt="Transaction history" class="theme-switchable" data-light="../assets/project-tickmill-trx-light.png" data-dark="../assets/project-tickmill-trx-dark.png"></figure>
-          </div>
-
-          <a class="cs-next lp-reveal" href="./hubpay.html">
-            <div>
-              <div class="cs-next__kicker">Next project · 03</div>
-              <h3 class="cs-next__title">Sending money abroad — without the friction or the fees.</h3>
-            </div>
-            <span class="cs-next__arrow" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span>
-          </a>
         </section>
       </div>
     </div>
@@ -2223,7 +2237,7 @@ body, .lp-nav, .lp-chip, .lp-project__media,
           </div>
           <div class="lp-footer__col">
             <h5>Contact</h5>
-            <a href="mailto:lander.arregiz@gmail.com">lander.arregiz@gmail.com</a>
+            <a href="/cdn-cgi/l/email-protection#a0ccc1cec4c5d28ec1d2d2c5c7c9dae0c7cdc1c9cc8ec3cfcd"><span class="__cf_email__" data-cfemail="395558575d5c4b17584b4b5c5e5043795e54585055175a5654">[email&#160;protected]</span></a>
             <p>Barcelona, ES</p>
           </div>
         </div>
@@ -2235,7 +2249,7 @@ body, .lp-nav, .lp-chip, .lp-project__media,
     </footer>
   </main>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   (function () {
     var STORAGE_KEY = 'la-theme';
     document.documentElement.style.setProperty('--grain-bg', "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.7 0'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>\")");
@@ -2251,10 +2265,6 @@ body, .lp-nav, .lp-chip, .lp-project__media,
       var next = isDark ? 'light' : 'dark';
       toggle.setAttribute('aria-label', 'Switch to ' + next + ' theme');
       toggle.setAttribute('title', 'Switch to ' + next + ' theme');
-      // Swap theme-sensitive images
-      document.querySelectorAll('.theme-switchable').forEach(function(img) {
-        img.src = isDark ? img.getAttribute('data-dark') : img.getAttribute('data-light');
-      });
     }
     syncToggle();
     toggle.addEventListener('click', function () {
