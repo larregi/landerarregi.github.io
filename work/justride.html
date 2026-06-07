@@ -1785,6 +1785,10 @@ body, .lp-nav, .lp-chip, .lp-project__media,
 .cs-screen__shot img {
   width: 100%; height: 100%; object-fit: cover; display: block;
 }
+/* The theming preview is a full-bleed 4:3 diagram with its own background,
+   so it gets its own frame ratio and no red backdrop — fills edge to edge. */
+.cs-screen__shot--theming { aspect-ratio: 4 / 3; background: var(--surface-alt); }
+.cs-screen__shot--theming .cs-shot { object-fit: cover; object-position: center; }
 .cs-screen__shot::after {
   content: ""; position: absolute; inset: 0; border-radius: inherit;
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--border) 60%, transparent) inset;
@@ -2297,9 +2301,9 @@ body, .lp-nav, .lp-chip, .lp-project__media,
               <div class="cs-screen__notes">
                 <span class="cs-screen__tag">White-label theming</span>
                 <h3 class="cs-screen__h">A Figma variables system that makes theming fast and testable.</h3>
-                <p class="cs-screen__p">Agencies can brand and deploy the platform as their own without rebuilding from scratch. A variables-driven theming system makes every customisation fast to apply and easy to validate before it ships.</p>
+                <p class="cs-screen__p">This theming redesign proposed a simplified Figma variables system that lets agencies adapt the app to their own brand in just a few moves — taking the thinking and heavy lifting out of white-labelling. They can apply their own brand identity with minimal effort, without needing branding experts or system design work.</p>
               </div>
-              <div class="cs-screen__shot cs-redbg"><img class="cs-shot cs-shot--light" src="../assets/project-justride-theming-light.png" alt="Figma variables agency theming system"><img class="cs-shot cs-shot--dark" src="../assets/project-justride-theming-dark.png" alt="" aria-hidden="true"></div>
+              <div class="cs-screen__shot cs-screen__shot--theming" id="themingSwap"><img class="cs-shot" id="themingSwapImg" src="../assets/theming-light-a.png" alt="Justride white-label theming — agencies adapt the app to their own brand"></div>
             </article>
 
             <article class="cs-screen cs-screen--flip lp-reveal">
@@ -2386,7 +2390,7 @@ body, .lp-nav, .lp-chip, .lp-project__media,
           </div>
           <div class="lp-footer__col">
             <h5>Contact</h5>
-            <a href="mailto:lander.arregiz@gmail.com">lander.arregiz@gmail.com</a>
+            <a href="/cdn-cgi/l/email-protection#a7cbc6c9c3c2d589c6d5d5c2c0cedde7c0cac6cecb89c4c8ca"><span class="__cf_email__" data-cfemail="761a17181213045817040413111f0c36111b171f1a5815191b">[email&#160;protected]</span></a>
             <p>Barcelona, ES</p>
           </div>
         </div>
@@ -2398,7 +2402,7 @@ body, .lp-nav, .lp-chip, .lp-project__media,
     </footer>
   </main>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   (function () {
     var STORAGE_KEY = 'la-theme';
 
@@ -2537,6 +2541,61 @@ body, .lp-nav, .lp-chip, .lp-project__media,
       }, { threshold: 0 });
       toastIO.observe(sentinel);
     })();
+  })();
+  </script>
+
+  <script>
+  /* ============================================================
+     White-label theming preview — auto-swapping, theme-aware.
+     Cycles a/b every 3.5s with a hard cut (no crossfade). The
+     active set follows the page theme: it reads the persisted
+     theme value from localStorage and mirrors the live
+     data-theme attribute, so toggling switches sets instantly.
+     Vanilla JS, no libraries.
+     ============================================================ */
+  (function () {
+    var img = document.getElementById('themingSwapImg');
+    if (!img) return;
+
+    var SETS = {
+      light: ['../assets/theming-light-a.png', '../assets/theming-light-b.png'],
+      dark:  ['../assets/theming-dark-a.png',  '../assets/theming-dark-b.png']
+    };
+    var SWAP_MS = 3500;
+
+    /* Preload all four so each hard cut is instant. */
+    Object.keys(SETS).forEach(function (k) {
+      SETS[k].forEach(function (src) { var p = new Image(); p.src = src; });
+    });
+
+    var frame = 0; /* 0 = a, 1 = b */
+
+    function currentTheme() {
+      /* The page persists the theme in localStorage and reflects it on
+         <html data-theme>. Prefer the live attribute (updated on toggle),
+         fall back to the stored value. */
+      var attr = document.documentElement.getAttribute('data-theme');
+      if (attr === 'dark' || attr === 'light') return attr;
+      var stored = localStorage.getItem('la-theme') || localStorage.getItem('lp-theme');
+      return stored === 'dark' ? 'dark' : 'light';
+    }
+
+    function render() {
+      var src = SETS[currentTheme()][frame];
+      if (img.getAttribute('src') !== src) img.setAttribute('src', src);
+    }
+
+    render();
+    setInterval(function () { frame = (frame + 1) % 2; render(); }, SWAP_MS);
+
+    /* Switch sets immediately when the theme is toggled. */
+    new MutationObserver(render).observe(document.documentElement, {
+      attributes: true, attributeFilter: ['data-theme']
+    });
+    /* Also catch cross-tab theme changes. */
+    window.addEventListener('storage', function (e) {
+      if (e.key === 'la-theme' || e.key === 'lp-theme') render();
+    });
   })();
   </script>
 </body>
