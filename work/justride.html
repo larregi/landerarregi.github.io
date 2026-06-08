@@ -2055,12 +2055,41 @@ body, .lp-nav, .lp-chip, .lp-project__media,
 :root[data-theme="dark"] .cs-shot.cs-shot--light { display: none; }
 :root[data-theme="dark"] .cs-shot.cs-shot--dark  { display: block; }
 
-/* Transparent device composites float on a dynamic red backdrop.
-   Light: #CC0000 @ 40% · Dark: #B40000 @ 30%. */
-.cs-redbg { background: rgba(204, 0, 0, 0.40); }
-:root[data-theme="dark"] .cs-redbg { background: rgba(180, 0, 0, 0.30); }
+/* Image placeholder — shown behind the screenshots so an empty / missing /
+   slow image reveals a labelled striped slot instead of a blank box. The
+   real image sits on top (z-index 1) and covers it once loaded; onerror
+   hides a broken image so the placeholder shows through. */
+.cs-ph {
+  position: absolute; inset: 0; z-index: 0;
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px;
+  background:
+    repeating-linear-gradient(135deg,
+      transparent 0, transparent 11px,
+      color-mix(in srgb, var(--border) 55%, transparent) 11px,
+      color-mix(in srgb, var(--border) 55%, transparent) 12px),
+    var(--surface-alt);
+}
+.cs-ph span {
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.06em; line-height: 1.45;
+  text-transform: uppercase; text-align: center;
+  color: var(--fg-2);
+  padding: 8px 14px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
+  max-width: 86%;
+}
+
+/* Screenshots already include their own background, so no red backdrop.
+   The container keeps its reserved aspect-ratio (so the slot never
+   collapses if an image is missing or slow), and the image fills it
+   edge-to-edge at full width via cover. */
+.cs-redbg { background: transparent; }
+:root[data-theme="dark"] .cs-redbg { background: transparent; }
 .cs-redbg .cs-shot {
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
   padding: 0;
 }
@@ -2210,8 +2239,9 @@ body, .lp-nav, .lp-chip, .lp-project__media,
           </div>
 
           <div class="cs-hero__cover cs-redbg lp-reveal" data-delay="3">
-            <img class="cs-shot cs-shot--light" src="../assets/project-justride-hero-light.png" alt="Justride multi-viewport ticketing across browser and native mobile">
-            <img class="cs-shot cs-shot--dark" src="../assets/project-justride-hero-dark.png" alt="" aria-hidden="true">
+            <div class="cs-ph"><span>Hero — multi-viewport ticketing across browser &amp; native</span></div>
+            <img class="cs-shot cs-shot--light" src="../assets/project-justride-hero-light.png" alt="Justride multi-viewport ticketing across browser and native mobile" onerror="this.style.display='none'">
+            <img class="cs-shot cs-shot--dark" src="../assets/project-justride-hero-dark.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
           </div>
         </section>
 
@@ -2235,7 +2265,7 @@ body, .lp-nav, .lp-chip, .lp-project__media,
         </section>
 
         <figure class="cs-bigfig lp-reveal">
-          <div class="cs-bigfig__shot cs-redbg"><img class="cs-shot cs-shot--light" src="../assets/project-justride-context-light.png" alt="Justride platform overview and rider landscape"><img class="cs-shot cs-shot--dark" src="../assets/project-justride-context-dark.png" alt="" aria-hidden="true"></div>
+          <div class="cs-bigfig__shot cs-redbg"><div class="cs-ph"><span>Context — platform overview &amp; rider landscape</span></div><img class="cs-shot cs-shot--light" src="../assets/project-justride-context-light.png" alt="Justride platform overview and rider landscape" onerror="this.style.display='none'"><img class="cs-shot cs-shot--dark" src="../assets/project-justride-context-dark.png" alt="" aria-hidden="true" onerror="this.style.display='none'"></div>
         </figure>
 
         <section class="cs-section" id="process">
@@ -2307,7 +2337,7 @@ body, .lp-nav, .lp-chip, .lp-project__media,
             </article>
 
             <article class="cs-screen cs-screen--flip lp-reveal">
-              <div class="cs-screen__shot cs-redbg"><img class="cs-shot cs-shot--light" src="../assets/project-justride-responsive-light.png" alt="Responsive Justride across browser and native viewports"><img class="cs-shot cs-shot--dark" src="../assets/project-justride-responsive-dark.png" alt="" aria-hidden="true"></div>
+              <div class="cs-screen__shot cs-redbg"><div class="cs-ph"><span>Responsive — Justride across browser &amp; native viewports</span></div><img class="cs-shot cs-shot--light" src="../assets/project-justride-responsive-light.png" alt="Responsive Justride across browser and native viewports" onerror="this.style.display='none'"><img class="cs-shot cs-shot--dark" src="../assets/project-justride-responsive-dark.png" alt="" aria-hidden="true" onerror="this.style.display='none'"></div>
               <div class="cs-screen__notes">
                 <span class="cs-screen__tag">Responsive, multi-viewport</span>
                 <h3 class="cs-screen__h">One experience, consistent across browser and native.</h3>
@@ -2321,13 +2351,13 @@ body, .lp-nav, .lp-chip, .lp-project__media,
                 <h3 class="cs-screen__h">Light and dark themes that stay fully usable.</h3>
                 <p class="cs-screen__p">Accessibility is baked into the approach rather than retrofitted, so both light and dark themes remain fully usable no matter how an agency customises them.</p>
               </div>
-              <div class="cs-screen__shot cs-redbg"><img class="cs-shot cs-shot--light" src="../assets/project-justride-a11y-light.png" alt="Accessible light and dark themes by default"><img class="cs-shot cs-shot--dark" src="../assets/project-justride-a11y-dark.png" alt="" aria-hidden="true"></div>
+              <div class="cs-screen__shot cs-redbg"><div class="cs-ph"><span>Accessibility — light &amp; dark themes by default</span></div><img class="cs-shot cs-shot--light" src="../assets/project-justride-a11y-light.png" alt="Accessible light and dark themes by default" onerror="this.style.display='none'"><img class="cs-shot cs-shot--dark" src="../assets/project-justride-a11y-dark.png" alt="" aria-hidden="true" onerror="this.style.display='none'"></div>
             </article>
           </div>
         </section>
 
         <figure class="cs-bigfig lp-reveal">
-          <div class="cs-bigfig__shot cs-redbg"><img class="cs-shot cs-shot--light" src="../assets/project-justride-solution-light.png" alt="White-label Justride system across viewports"><img class="cs-shot cs-shot--dark" src="../assets/project-justride-solution-dark.png" alt="" aria-hidden="true"></div>
+          <div class="cs-bigfig__shot cs-redbg"><div class="cs-ph"><span>Solution — white-label system across viewports</span></div><img class="cs-shot cs-shot--light" src="../assets/project-justride-solution-light.png" alt="White-label Justride system across viewports" onerror="this.style.display='none'"><img class="cs-shot cs-shot--dark" src="../assets/project-justride-solution-dark.png" alt="" aria-hidden="true" onerror="this.style.display='none'"></div>
         </figure>
 
         <section class="cs-section" id="impact">
@@ -2390,7 +2420,7 @@ body, .lp-nav, .lp-chip, .lp-project__media,
           </div>
           <div class="lp-footer__col">
             <h5>Contact</h5>
-            <a href="/cdn-cgi/l/email-protection#a7cbc6c9c3c2d589c6d5d5c2c0cedde7c0cac6cecb89c4c8ca"><span class="__cf_email__" data-cfemail="761a17181213045817040413111f0c36111b171f1a5815191b">[email&#160;protected]</span></a>
+            <a href="mailto:lander.arregiz@gmail.com">lander.arregiz@gmail.com</a>
             <p>Barcelona, ES</p>
           </div>
         </div>
@@ -2402,7 +2432,7 @@ body, .lp-nav, .lp-chip, .lp-project__media,
     </footer>
   </main>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script>
   (function () {
     var STORAGE_KEY = 'la-theme';
 
