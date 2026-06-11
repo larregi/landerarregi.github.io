@@ -4,6 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Lander Arregi — Product Designer</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/favicon.png">
   <meta name="description" content="Senior product designer crafting clarity for fintech, transit and SaaS teams.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,8 +19,8 @@
       if (pref !== 'dark' && pref !== 'light') pref = 'light';
       document.documentElement.setAttribute('data-theme', pref);
       document.documentElement.setAttribute('data-theme-pref', pref);
-      /* Land at the top header on open/return — stop the browser from
-         restoring the previous scroll position. */
+      /* Own the screen with the loader until content is ready. */
+      document.documentElement.classList.add('is-loading');
       if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     })();
   </script>
@@ -422,6 +424,9 @@ body, .lp-nav, .lp-chip, .lp-project__media,
   background: var(--mint);
   display: inline-flex; align-items: center; justify-content: center;
   color: #0b0a0a; font-weight: 800; font-size: 11px;
+}
+.lp-nav__brand-logo {
+  width: 22px; height: 22px; display: block; flex: none;
 }
 .lp-nav__links {
   display: flex; gap: 4px; align-items: center;
@@ -1171,6 +1176,7 @@ body, .lp-nav, .lp-chip, .lp-project__media,
   transition: background var(--dur-micro) var(--ease-out), padding var(--dur-base) var(--ease-out);
   border-radius: 0;
 }
+.lp-resume__row:first-child { border-top: none; }
 .lp-resume__row:last-child { border-bottom: 1px solid var(--border); }
 .lp-resume__row:hover {
   background: var(--surface);
@@ -1363,9 +1369,85 @@ body, .lp-nav, .lp-chip, .lp-project__media,
 }
 .lp-edge-info b { color: var(--fg); font-weight: 600; }
 
+/* ============================================================
+   Page loader — blurred ambient backdrop, centered brand mark,
+   determinate ease-out progress ring. Theme-aware via tokens.
+   ============================================================ */
+.lp-loader {
+  position: fixed; inset: 0; z-index: 1000;
+  display: grid; place-items: center;
+  background: color-mix(in srgb, var(--bg) 58%, transparent);
+  -webkit-backdrop-filter: blur(28px) saturate(1.18);
+  backdrop-filter: blur(28px) saturate(1.18);
+  overflow: hidden;
+  transition: opacity 700ms var(--ease-out), visibility 700ms var(--ease-out);
+}
+/* Keep a solid theme base behind the frosted overlay (no flash before paint). */
+html { background: var(--bg); }
+.lp-loader.is-done {
+  opacity: 0; visibility: hidden; pointer-events: none;
+}
+/* Soft blurred mint glow — matches the hero's ambient bloom */
+.lp-loader__glow {
+  position: absolute; width: min(60vw, 540px); aspect-ratio: 1; border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--mint) 42%, transparent) 0%, transparent 68%);
+  filter: blur(72px);
+  opacity: 0.5;
+  animation: lp-loader-breathe 3.4s var(--ease-in-out) infinite;
+}
+:root[data-theme="dark"] .lp-loader__glow { opacity: 0.42; }
+.lp-loader__core {
+  position: relative; width: 124px; height: 124px;
+  display: grid; place-items: center;
+}
+.lp-loader__ring {
+  position: absolute; inset: 0; width: 124px; height: 124px;
+  transform: rotate(-90deg);
+}
+.lp-loader__track {
+  fill: none; stroke: var(--border); stroke-width: 2.5; opacity: 0.55;
+}
+.lp-loader__bar {
+  fill: none; stroke: var(--mint); stroke-width: 3; stroke-linecap: round;
+  stroke-dasharray: 326.726;
+  stroke-dashoffset: 300.6; /* ~8% at first paint, before JS drives it */
+}
+.lp-loader__logo {
+  width: 56px; height: 56px; display: block;
+  animation: lp-loader-pulse 2.6s var(--ease-in-out) infinite;
+}
+@keyframes lp-loader-pulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.06); }
+}
+@keyframes lp-loader-breathe {
+  0%, 100% { transform: scale(0.9); opacity: 0.4; }
+  50%      { transform: scale(1.06); opacity: 0.58; }
+}
+/* Lock scroll only while the loader owns the screen (JS-added class). */
+html.is-loading, html.is-loading body { overflow: hidden; }
+html.is-loading body { height: 100%; }
+@media (prefers-reduced-motion: reduce) {
+  .lp-loader__logo, .lp-loader__glow { animation: none; }
+}
+/* No JS → never trap the visitor behind the overlay. */
+.lp-loader.no-js-hidden { display: none; }
+
   </style>
 </head>
 <body>
+  <div class="lp-loader" id="pageLoader" role="status" aria-live="polite" aria-label="Loading">
+    <div class="lp-loader__glow" aria-hidden="true"></div>
+    <div class="lp-loader__core">
+      <svg class="lp-loader__ring" viewBox="0 0 124 124" aria-hidden="true">
+        <circle class="lp-loader__track" cx="62" cy="62" r="52"></circle>
+        <circle class="lp-loader__bar" cx="62" cy="62" r="52"></circle>
+      </svg>
+      <img class="lp-loader__logo" src="assets/favicon.png" alt="" width="58" height="58">
+    </div>
+  </div>
+  <noscript><style>.lp-loader{display:none!important}html.is-loading,html.is-loading body{overflow:auto!important}</style></noscript>
+
   <div class="lp-grain" aria-hidden="true"></div>
 
   <div class="lp-progress" aria-hidden="true"><div class="lp-progress__bar" id="progressBar"></div></div>
@@ -1373,7 +1455,7 @@ body, .lp-nav, .lp-chip, .lp-project__media,
   <div class="lp-nav-wrap" id="navWrap" data-style="pill">
     <nav class="lp-nav" aria-label="Primary">
       <a class="lp-nav__brand" href="#top">
-        <span class="lp-nav__brand-dot">L</span>
+        <img class="lp-nav__brand-logo" src="assets/favicon.png" alt="" width="22" height="22">
         Lander Arregi
       </a>
       <div class="lp-nav__links" aria-label="Sections">
@@ -1503,7 +1585,7 @@ body, .lp-nav, .lp-chip, .lp-project__media,
               <div class="lp-resume__year">2020 — Now</div>
               <div class="lp-resume__co">Mooncascade OÜ</div>
               <div class="lp-resume__role">Senior UX / UI Designer</div>
-              <div class="lp-resume__place">Tallinn · Remote</div>
+              <div class="lp-resume__place">Remote</div>
             </div>
             <div class="lp-resume__row lp-reveal">
               <div class="lp-resume__year">2020</div>
@@ -1572,7 +1654,7 @@ body, .lp-nav, .lp-chip, .lp-project__media,
               <p>I'm a user-centred focus designer with a large experience in different projects and companies. My design process involves user research, analysis of data and usability testing, and collaborating with multi discipline teams in agile and iterative processes and methodologies.</p>
               <p>My practice leans on research, data, and iteration. I've worked with startups and established companies, shaping products that are both intuitive and scalable.</p>
               <p>I can highlight my mobile design experience as I have been taking part in different projects involving both Hybrid and Native applications. I'm also experienced working with web platforms and having direct communication with Front-End developers and QA engineers, leading the design decisions and process.</p>
-              <p>Outside of work I climb, hike, and shoot photo and video — slow hobbies that reward patience. They keep me honest about how long good things actually take.</p>
+              <p>Outside of work I climb, hike, and shoot photo and video, hobbies that bring me a healthy balance between digital world and nature.</p>
             </div>
           </div>
 
@@ -1589,8 +1671,8 @@ body, .lp-nav, .lp-chip, .lp-project__media,
             <span class="lp-kicker-line"></span>
           </div>
           <div class="lp-about__photos">
-            <figure class="lp-about__photo lp-about__photo--tall lp-reveal">
-              <img src="assets/hobby-1.jpg" alt="Hiking in the Basque country">
+            <figure class="lp-about__photo lp-about__photo--tall lp-reveal" style="grid-row: span 4;">
+              <img src="assets/hobby-1.png" alt="Lander sport climbing on a limestone wall in Valencia">
               <figcaption>Climbing, Valencia</figcaption>
             </figure>
             <figure class="lp-about__photo lp-reveal" data-delay="1">
@@ -1604,6 +1686,18 @@ body, .lp-nav, .lp-chip, .lp-project__media,
             <figure class="lp-about__photo lp-about__photo--wide lp-reveal" data-delay="3">
               <img src="assets/hobby-4.jpg" alt="Forest">
               <figcaption>Climbing in Leonidio, Greece</figcaption>
+            </figure>
+            <figure class="lp-about__photo lp-about__photo--tall lp-reveal">
+              <img src="assets/hobby-5.jpg" alt="Boatwoman in a conical hat among karst peaks and rice fields in Ninh Binh">
+              <figcaption>Ninh Binh, Vietnam</figcaption>
+            </figure>
+            <figure class="lp-about__photo lp-about__photo--tall lp-reveal" data-delay="1">
+              <img src="assets/hobby-6.jpg" alt="Mayon Volcano rising over green rice paddies at sunset">
+              <figcaption>Mayon Volcano, Philippines</figcaption>
+            </figure>
+            <figure class="lp-about__photo lp-about__photo--tall lp-reveal" data-delay="2">
+              <img src="assets/hobby-7.jpg" alt="Two climbers on a limestone spire above the turquoise sea at Cala Goloritzé">
+              <figcaption>Cala Goloritzé, Sardinia</figcaption>
             </figure>
           </div>
 
@@ -1673,6 +1767,62 @@ body, .lp-nav, .lp-chip, .lp-project__media,
   </main>
 
   <script>
+  /* ---- Page loader: determinate, ease-out progress ring ---- */
+  (function () {
+    var root = document.documentElement;
+    var loader = document.getElementById('pageLoader');
+    if (!loader) { root.classList.remove('is-loading'); return; }
+    var bar = loader.querySelector('.lp-loader__bar');
+    var CIRC = 2 * Math.PI * 52; /* matches r=52 in markup */
+    bar.style.strokeDasharray = CIRC;
+
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var startedAt = performance.now();
+    var MIN_MS = reduce ? 0 : 700;      /* hold long enough to read, never flash */
+    var current = 0, target = 0.08, loaded = false, finishing = false;
+
+    /* Advance the target as real images decode. */
+    var imgs = Array.prototype.slice.call(document.images);
+    var total = imgs.length, done = 0;
+    function bump() {
+      done++;
+      var frac = total ? done / total : 1;
+      target = Math.max(target, 0.12 + 0.78 * frac);
+    }
+    imgs.forEach(function (img) {
+      if (img.complete) { bump(); }
+      else { img.addEventListener('load', bump); img.addEventListener('error', bump); }
+    });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () { target = Math.max(target, 0.55); });
+    }
+    window.addEventListener('load', function () { target = 1; loaded = true; });
+
+    function finish() {
+      finishing = true;
+      loader.classList.add('is-done');
+      root.classList.remove('is-loading');
+      setTimeout(function () {
+        if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+      }, 750);
+    }
+
+    function frame(now) {
+      current += (target - current) * 0.085;          /* smooth ease toward target */
+      if (loaded && current > 0.997) current = 1;
+      bar.style.strokeDashoffset = CIRC * (1 - current);
+      if (current >= 0.999 && loaded) {
+        if (!finishing) setTimeout(finish, Math.max(0, MIN_MS - (now - startedAt)));
+        return;
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+
+    /* Safety valve: never hold the page hostage. */
+    setTimeout(function () { target = 1; loaded = true; }, 8000);
+  })();
+
   (function () {
     var STORAGE_KEY = 'la-theme';
 
